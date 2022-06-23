@@ -3,10 +3,14 @@ package com.velasco.recipeapp;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.google.android.material.tabs.TabLayout;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -55,10 +59,60 @@ public class DetailsFragment extends Fragment {
         }
     }
 
+
+    /************************************ MINE *****************************/
+
+    // STEP 20:  Δήλωση view
+    View view;
+
+    // STEP 21: Διαδικασία Recycler View
+    private TabLayout tabLayout;
+    private ViewPager2 viewPager2;
+    private MyFragmentAdapter adapter;
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_details, container, false);
+        view = inflater.inflate(R.layout.fragment_details, container, false);
+
+
+        tabLayout = view.findViewById(R.id.tabLayout);
+        viewPager2 = view.findViewById(R.id.viewPager2);
+
+        FragmentManager fragmentManager = getChildFragmentManager();
+        adapter = new MyFragmentAdapter(fragmentManager, getLifecycle());
+        viewPager2.setAdapter(adapter);
+
+
+        // STEP 23
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                viewPager2.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
+        viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                tabLayout.selectTab(tabLayout.getTabAt(position));
+            }
+        });
+
+
+        return view;
+
     }
 }

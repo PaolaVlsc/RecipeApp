@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".StartersFragment"
+    android:id="@+id/startersFrag"
     android:background="@color/white">
 
     <!-- Recycler View για την εμφάνιση των κατηγοριών -->

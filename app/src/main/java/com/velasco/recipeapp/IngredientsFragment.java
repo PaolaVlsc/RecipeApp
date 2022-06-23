@@ -55,10 +55,15 @@ public class IngredientsFragment extends Fragment {
         }
     }
 
+    View view;
+    // members
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_ingredients, container, false);
+        view = inflater.inflate(R.layout.fragment_ingredients, container, false);
+
+        return view;
     }
 }

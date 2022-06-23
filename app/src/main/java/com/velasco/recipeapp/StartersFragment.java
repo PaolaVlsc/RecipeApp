@@ -123,7 +123,8 @@ public class StartersFragment extends Fragment {
 
             @Override
             public void onItemClick(Recipe item) {
-
+                DetailsFragment detailsFragment = new DetailsFragment();
+                getParentFragmentManager().beginTransaction().replace(R.id.startersFrag, detailsFragment).addToBackStack(null).commit();
             }
         });
 
