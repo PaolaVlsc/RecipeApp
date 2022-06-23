@@ -132,7 +132,7 @@ public class StartersFragment extends Fragment {
 
                 DetailsFragment detailsFragment = new DetailsFragment();
                 detailsFragment.setArguments(bundle);
-                getParentFragmentManager().beginTransaction().replace(R.id.startersFrag, detailsFragment).addToBackStack(null).commit();
+                getParentFragmentManager().beginTransaction().replace(R.id.categoriesFrag, detailsFragment).addToBackStack(null).commit();
 
             }
         });
