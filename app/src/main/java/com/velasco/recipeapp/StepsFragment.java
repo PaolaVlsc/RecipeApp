@@ -172,7 +172,7 @@ public class StepsFragment extends Fragment {
         }) {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
-                params.put("name", "kl");
+                params.put("id", Integer.toString(2));
                 return params;
             }
         };
