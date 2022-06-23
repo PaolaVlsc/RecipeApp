@@ -18,7 +18,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -39,10 +38,10 @@ import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link CategoriesFragment#newInstance} factory method to
+ * Use the {@link DessertsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CategoriesFragment extends Fragment {
+public class DessertsFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -53,7 +52,7 @@ public class CategoriesFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public CategoriesFragment() {
+    public DessertsFragment() {
         // Required empty public constructor
     }
 
@@ -63,11 +62,11 @@ public class CategoriesFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment CategoriesFragment.
+     * @return A new instance of fragment DessertsFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static CategoriesFragment newInstance(String param1, String param2) {
-        CategoriesFragment fragment = new CategoriesFragment();
+    public static DessertsFragment newInstance(String param1, String param2) {
+        DessertsFragment fragment = new DessertsFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -88,9 +87,9 @@ public class CategoriesFragment extends Fragment {
     View view;
 
 
-    private ArrayList<Category> mCategoryList;
+    private ArrayList<Recipe> mRecipeList;
     private RecyclerView mRecyclerView;
-    private CategoryAdapter mCategoryAdapter;
+    private RecipeAdapter mRecipeAdapter;
 
     private ActivityResultLauncher<Intent> mActivityResultLauncher;
 
@@ -99,9 +98,10 @@ public class CategoriesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_categories, container, false);
+        view = inflater.inflate(R.layout.fragment_desserts, container, false);
 
-        mRecyclerView = view.findViewById(R.id.rv_categories);
+
+        mRecyclerView = view.findViewById(R.id.rv_desserts);
 
         // Layout Manager
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());  // Κάθε item είναι μια γραμμή
@@ -116,26 +116,19 @@ public class CategoriesFragment extends Fragment {
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
 
-        mCategoryList = new ArrayList<>();
+        mRecipeList = new ArrayList<>();
 
 
-        mCategoryAdapter = new CategoryAdapter(getContext(), mCategoryList, new CategoryAdapter.OnItemClickListener() {
+        mRecipeAdapter = new RecipeAdapter(getContext(), mRecipeList, new RecipeAdapter.OnItemClickListener() {
+
             @Override
-            public void onItemClick(Category item) {
-                if (item.getId() == 1) {
-                    StartersFragment startersFragment = new StartersFragment();
-                    getParentFragmentManager().beginTransaction().addToBackStack(null).add(R.id.categoriesFrag, startersFragment).commit();
-                } else if (item.getId() == 2) {
-                    MainCoursesFragment mainCoursesFragment = new MainCoursesFragment();
-                    getParentFragmentManager().beginTransaction().addToBackStack(null).add(R.id.categoriesFrag, mainCoursesFragment).commit();
-                } else {
-                    DessertsFragment dessertsFragment = new DessertsFragment();
-                    getParentFragmentManager().beginTransaction().addToBackStack(null).add(R.id.categoriesFrag, dessertsFragment).commit();
-                }
+            public void onItemClick(Recipe item) {
+
             }
         });
 
-        mRecyclerView.setAdapter(mCategoryAdapter);
+        mRecyclerView.setAdapter(mRecipeAdapter);
+
 
         refreshList();
         mActivityResultLauncher = registerForActivityResult(
@@ -157,8 +150,8 @@ public class CategoriesFragment extends Fragment {
     }
 
     private void refreshList() {
-        mCategoryList.clear();
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constants.URL_SELECT_CATEGORIES, new Response.Listener<String>() {
+        mRecipeList.clear();
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constants.URL_SELECT_CATEGORY_DESSERTS, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {
@@ -173,13 +166,13 @@ public class CategoriesFragment extends Fragment {
                     Log.i("TEST", "onResponse: RESPONSE=" + response);
 
 
-                    Type type = new TypeToken<ArrayList<Category>>() {
+                    Type type = new TypeToken<ArrayList<Recipe>>() {
                     }.getType();
-                    ArrayList<Category> categoryArrayList = gson.fromJson(jsonArray.toString(), type);
-                    mCategoryList.addAll(categoryArrayList);
+                    ArrayList<Recipe> recipeArrayList = gson.fromJson(jsonArray.toString(), type);
+                    mRecipeList.addAll(recipeArrayList);
 
 
-                    mRecyclerView.setAdapter(mCategoryAdapter);
+                    mRecyclerView.setAdapter(mRecipeAdapter);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
