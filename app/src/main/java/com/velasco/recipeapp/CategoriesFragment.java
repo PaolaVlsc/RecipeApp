@@ -122,10 +122,14 @@ public class CategoriesFragment extends Fragment {
         mCategoryAdapter = new CategoryAdapter(getContext(), mCategoryList, new CategoryAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Category item) {
-                if(item.getId() == 2)
+                if(item.getId() == 1)
                 {
                     StartersFragment startersFragment = new StartersFragment();
                     getParentFragmentManager().beginTransaction().addToBackStack(null).add(R.id.categoriesFrag, startersFragment).commit();
+                } else if(item.getId() == 2)
+                {
+                    MainCoursesFragment mainCoursesFragment = new MainCoursesFragment();
+                    getParentFragmentManager().beginTransaction().addToBackStack(null).add(R.id.categoriesFrag, mainCoursesFragment).commit();
                 }
             }
         });
