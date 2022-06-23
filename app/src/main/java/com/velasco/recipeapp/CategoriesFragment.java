@@ -122,12 +122,15 @@ public class CategoriesFragment extends Fragment {
         mCategoryAdapter = new CategoryAdapter(getContext(), mCategoryList, new CategoryAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Category item) {
-
+                if(item.getId() == 2)
+                {
+                    StartersFragment startersFragment = new StartersFragment();
+                    getParentFragmentManager().beginTransaction().addToBackStack(null).add(R.id.categoriesFrag, startersFragment).commit();
+                }
             }
         });
 
         mRecyclerView.setAdapter(mCategoryAdapter);
-
 
         refreshList();
         mActivityResultLauncher = registerForActivityResult(
@@ -165,7 +168,8 @@ public class CategoriesFragment extends Fragment {
                     Log.i("TEST", "onResponse: RESPONSE=" + response);
 
 
-                    Type type = new TypeToken<ArrayList<Category>>() {}.getType();
+                    Type type = new TypeToken<ArrayList<Category>>() {
+                    }.getType();
                     ArrayList<Category> categoryArrayList = gson.fromJson(jsonArray.toString(), type);
                     mCategoryList.addAll(categoryArrayList);
 
@@ -178,7 +182,7 @@ public class CategoriesFragment extends Fragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-               // Toast.makeText(MainActivity.this, "Failed " + error.toString(), Toast.LENGTH_SHORT).show();
+                // Toast.makeText(MainActivity.this, "Failed " + error.toString(), Toast.LENGTH_SHORT).show();
             }
         }) {
             protected Map<String, String> getParams() throws AuthFailureError {
