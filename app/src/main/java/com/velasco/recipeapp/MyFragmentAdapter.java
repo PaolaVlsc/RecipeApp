@@ -9,15 +9,18 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 public class MyFragmentAdapter extends FragmentStateAdapter {
 
-    public MyFragmentAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle) {
+    private int recipe_id;
+
+    public MyFragmentAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle, int recipe_id) {
         super(fragmentManager, lifecycle);
+        this.recipe_id = recipe_id;
     }
 
     @NonNull
     @Override
     public Fragment createFragment(int position) {
         if (position == 1) {
-            return new StepsFragment();
+            return new StepsFragment().newInstance(recipe_id);
         }
         return new IngredientsFragment();
     }

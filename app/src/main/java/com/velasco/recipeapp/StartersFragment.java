@@ -123,8 +123,17 @@ public class StartersFragment extends Fragment {
 
             @Override
             public void onItemClick(Recipe item) {
+
+
+
+                int id = item.getId();
+                Bundle bundle = new Bundle();
+                bundle.putInt("recipeID", id);
+
                 DetailsFragment detailsFragment = new DetailsFragment();
+                detailsFragment.setArguments(bundle);
                 getParentFragmentManager().beginTransaction().replace(R.id.startersFrag, detailsFragment).addToBackStack(null).commit();
+
             }
         });
 

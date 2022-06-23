@@ -19,6 +19,8 @@ import com.google.android.material.tabs.TabLayout;
  */
 public class DetailsFragment extends Fragment {
 
+
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -71,6 +73,7 @@ public class DetailsFragment extends Fragment {
     private MyFragmentAdapter adapter;
 
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -78,11 +81,14 @@ public class DetailsFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_details, container, false);
 
 
+        Bundle bundle = this.getArguments();
+        int recipe_id = bundle.getInt("recipeID");
+
         tabLayout = view.findViewById(R.id.tabLayout);
         viewPager2 = view.findViewById(R.id.viewPager2);
 
         FragmentManager fragmentManager = getChildFragmentManager();
-        adapter = new MyFragmentAdapter(fragmentManager, getLifecycle());
+        adapter = new MyFragmentAdapter(fragmentManager, getLifecycle(), recipe_id);
         viewPager2.setAdapter(adapter);
 
 
