@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/purple_200"
-    tools:context=".IngredientsFragment">
+    tools:context=".IngredientsFragment"
+    android:id="@+id/ingredientsFrag">
 
     <!-- Recycler View για την εμφάνιση των κατηγοριών -->
     <androidx.constraintlayout.widget.ConstraintLayout

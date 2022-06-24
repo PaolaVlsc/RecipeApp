@@ -25,6 +25,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -78,6 +79,8 @@ public class IngredientsFragment extends Fragment {
 
     private ActivityResultLauncher<Intent> mActivityResultLauncher;
 
+    // add button
+    private FloatingActionButton floatingActionButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -86,6 +89,7 @@ public class IngredientsFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_ingredients, container, false);
 
         mRecyclerView = view.findViewById(R.id.rv_ingredients);
+        floatingActionButton = view.findViewById(R.id.fab);
 
         // Layout Manager
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());  // Κάθε item είναι μια γραμμή
@@ -105,7 +109,7 @@ public class IngredientsFragment extends Fragment {
 
         mIngredientList = new ArrayList<>();
 
-        mIngredientAdapter = new IngredientAdapter(getContext(), mIngredientList, new IngredientAdapter.OnItemClickListener(){
+        mIngredientAdapter = new IngredientAdapter(getContext(), mIngredientList, new IngredientAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Ingredient item) {
 
@@ -131,7 +135,14 @@ public class IngredientsFragment extends Fragment {
                     }
                 });
 
-
+// add instruction
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AddIngredientFragment addIngredientFragment = new AddIngredientFragment();
+                getParentFragmentManager().beginTransaction().replace(R.id.ingredientsFrag, addIngredientFragment).addToBackStack(null).commit();
+            }
+        });
 
         return view;
     }
@@ -171,7 +182,7 @@ public class IngredientsFragment extends Fragment {
         }) {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
-                 params.put("id", Integer.toString(mRecipeId));
+                params.put("id", Integer.toString(mRecipeId));
                 return params;
             }
         };
