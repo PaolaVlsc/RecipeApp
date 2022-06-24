@@ -142,7 +142,15 @@ public class StepsFragment extends Fragment {
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
+                int id = mRecipeId;
+                Bundle bundle = new Bundle();
+                bundle.putInt("recipeID", id);
+
                 AddInstruction addInstruction = new AddInstruction();
+                addInstruction.setArguments(bundle);
+
                 getParentFragmentManager().beginTransaction().replace(R.id.stepsFrag, addInstruction).addToBackStack(null).commit();
             }
         });
