@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -55,10 +56,35 @@ public class AddIngredientFragment extends Fragment {
         }
     }
 
+
+    View view;
+    private Button cancelBtn;
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_add_ingredient, container, false);
+        view = inflater.inflate(R.layout.fragment_add_ingredient, container, false);
+
+        cancelBtn = view.findViewById(R.id.btn_cancelIngredient);
+        Bundle bundle = this.getArguments();
+        int id = bundle.getInt("recipeID");
+
+
+        // cancel
+        cancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getParentFragmentManager().beginTransaction().add(R.id.ingredientsFrag, new IngredientsFragment().newInstance(id)).commit();
+            }
+        });
+
+
+
+
+
+
+        return view;
     }
 }

@@ -135,11 +135,16 @@ public class IngredientsFragment extends Fragment {
                     }
                 });
 
-// add instruction
+        // add instruction
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                int id = mRecipeId;
+                Bundle bundle = new Bundle();
+                bundle.putInt("recipeID", id);
+
                 AddIngredientFragment addIngredientFragment = new AddIngredientFragment();
+                addIngredientFragment.setArguments(bundle);
                 getParentFragmentManager().beginTransaction().replace(R.id.ingredientsFrag, addIngredientFragment).addToBackStack(null).commit();
             }
         });

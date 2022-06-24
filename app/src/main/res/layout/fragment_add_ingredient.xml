@@ -35,8 +35,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/et_quantity"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/et_quantity"
-            app:layout_constraintVertical_bias="0.0"
-             />
+            app:layout_constraintVertical_bias="0.0" />
 
 
         <EditText
@@ -54,18 +53,18 @@
             app:layout_constraintTop_toBottomOf="@+id/et_quantity" />
 
         <Button
-            android:id="@+id/btn_done"
+            android:id="@+id/btn_doneIngredient"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="52dp"
             android:text="DONE"
-            app:layout_constraintBottom_toBottomOf="@+id/btn_cancel"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_cancelIngredient"
             app:layout_constraintEnd_toEndOf="@+id/et_ingredientName"
-            app:layout_constraintTop_toTopOf="@+id/btn_cancel"
+            app:layout_constraintTop_toTopOf="@+id/btn_cancelIngredient"
             app:layout_constraintVertical_bias="0.0" />
 
         <Button
-            android:id="@+id/btn_cancel"
+            android:id="@+id/btn_cancelIngredient"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="52dp"
