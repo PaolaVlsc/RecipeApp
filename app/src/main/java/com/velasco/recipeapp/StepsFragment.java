@@ -25,6 +25,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -70,6 +71,7 @@ public class StepsFragment extends Fragment {
     /********************** START OF CODE *********************/
     View view;
     private TextView recipeId;
+    private FloatingActionButton floatingActionButton;
 
 
     private ArrayList<Instruction> mInstructionList;
@@ -83,7 +85,7 @@ public class StepsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_steps, container, false);
-
+        floatingActionButton = view.findViewById(R.id.fab);
 //        recipeId = view.findViewById(R.id.recipeId);
 //        recipeId.setText(Integer.toString(mRecipeId));
 
@@ -132,6 +134,20 @@ public class StepsFragment extends Fragment {
                         }
                     }
                 });
+
+
+
+
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TestFragment testFragment = new TestFragment();
+                getParentFragmentManager().beginTransaction().replace(R.id.stepsFrag, testFragment).addToBackStack(null).commit();
+            }
+        });
+
+
+
 
         return view;
     }
