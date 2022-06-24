@@ -148,10 +148,10 @@ public class StepsFragment extends Fragment {
                 Bundle bundle = new Bundle();
                 bundle.putInt("recipeID", id);
 
-                AddInstruction addInstruction = new AddInstruction();
-                addInstruction.setArguments(bundle);
+                AddInstructionFragment addInstructionFragment = new AddInstructionFragment();
+                addInstructionFragment.setArguments(bundle);
 
-                getParentFragmentManager().beginTransaction().replace(R.id.stepsFrag, addInstruction).addToBackStack(null).commit();
+                getParentFragmentManager().beginTransaction().replace(R.id.stepsFrag, addInstructionFragment).addToBackStack(null).commit();
             }
         });
 
