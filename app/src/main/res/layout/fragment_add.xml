@@ -61,20 +61,20 @@
             app:layout_constraintTop_toBottomOf="@+id/et_recipeDescription" />
 
         <Button
-            android:id="@+id/btnDone"
+            android:id="@+id/btn_doneRecipe"
             android:layout_width="163dp"
             android:layout_height="49dp"
             android:layout_marginEnd="67dp"
             android:text="CREATE"
-            app:layout_constraintBottom_toBottomOf="@+id/btnDelete"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_cancelRecipe"
             app:layout_constraintEnd_toEndOf="@+id/spinner"
             app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toEndOf="@+id/btnDelete"
-            app:layout_constraintTop_toTopOf="@+id/btnDelete"
+            app:layout_constraintStart_toEndOf="@+id/btn_cancelRecipe"
+            app:layout_constraintTop_toTopOf="@+id/btn_cancelRecipe"
             app:layout_constraintVertical_bias="0.0" />
 
         <Button
-            android:id="@+id/btnDelete"
+            android:id="@+id/btn_cancelRecipe"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="52dp"
