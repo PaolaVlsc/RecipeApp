@@ -44,7 +44,7 @@ import java.util.Map;
  */
 public class StepsFragment extends Fragment {
 
-    private static final String ARG_GAME_ID = "recipe_id";
+    private static final String RECIPE_ID = "recipe_id";
     private int mRecipeId;
 
     public StepsFragment() {
@@ -54,7 +54,7 @@ public class StepsFragment extends Fragment {
     public static StepsFragment newInstance(int recipeID) {
         StepsFragment fragment = new StepsFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_GAME_ID, recipeID);
+        args.putInt(RECIPE_ID, recipeID);
         fragment.setArguments(args);
         return fragment;
     }
@@ -63,7 +63,7 @@ public class StepsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mRecipeId = getArguments().getInt(ARG_GAME_ID);
+            mRecipeId = getArguments().getInt(RECIPE_ID);
         }
     }
 

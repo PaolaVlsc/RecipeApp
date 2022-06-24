@@ -22,7 +22,7 @@ public class MyFragmentAdapter extends FragmentStateAdapter {
         if (position == 1) {
             return new StepsFragment().newInstance(recipe_id);
         }
-        return new IngredientsFragment();
+        return new IngredientsFragment().newInstance(recipe_id);
     }
 
     @Override
