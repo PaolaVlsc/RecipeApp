@@ -57,7 +57,7 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.Vi
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         // Σύνδεση με το xml item
-        private TextView instructionTv;
+        private TextView instructionTv, quantityTv, measurementTv;
         private ImageView logoItemIv, deleteItemIv;
 
 
@@ -65,12 +65,17 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.Vi
             super(itemView);
 
             // Σύνδεση με το xml item
-            instructionTv = itemView.findViewById(R.id.tv_ingredient);
+            instructionTv = itemView.findViewById(R.id.tv_ingredientName);
+            quantityTv = itemView.findViewById(R.id.tv_quantity);
+            measurementTv = itemView.findViewById(R.id.tv_measurement);
+
         }
 
         public void bind(Ingredient ingredient, OnItemClickListener listener) {
 
             instructionTv.setText(ingredient.getName());
+            quantityTv.setText(Integer.toString((int) ingredient.getQuantity()));
+            measurementTv.setText(ingredient.getMeasurement());
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
