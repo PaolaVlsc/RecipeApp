@@ -81,9 +81,6 @@ public class StepsFragment extends Fragment {
     private ActivityResultLauncher<Intent> mActivityResultLauncher;
 
 
-
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -91,8 +88,8 @@ public class StepsFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_steps, container, false);
         floatingActionButton = view.findViewById(R.id.fab);
 
-//        recipeId = view.findViewById(R.id.recipeId);
-//        recipeId.setText(Integer.toString(mRecipeId));
+        // recipeId = view.findViewById(R.id.recipeId);
+        // recipeId.setText(Integer.toString(mRecipeId));
 
 
         mRecyclerView = view.findViewById(R.id.rv_instructions);
