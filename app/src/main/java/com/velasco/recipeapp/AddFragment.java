@@ -7,7 +7,12 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -59,6 +64,13 @@ public class AddFragment extends Fragment {
 
     View view;
     private Button cancelBtn;
+    private Spinner spinner;
+    private String[] categories = {
+            "Starters",
+            "Main Courses",
+            "Desserts"
+    };
+    public ArrayList<String> spinnerList = new ArrayList<>(Arrays.asList(categories));
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -67,6 +79,12 @@ public class AddFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_add, container, false);
 
         cancelBtn = view.findViewById(R.id.btn_cancelRecipe);
+
+        spinner = view.findViewById(R.id.spinner);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, spinnerList);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+
 
         // cancel
         cancelBtn.setOnClickListener(new View.OnClickListener() {
@@ -77,7 +95,6 @@ public class AddFragment extends Fragment {
                 getParentFragmentManager().beginTransaction().replace(R.id.addFrag, categoriesFragment).commit();
             }
         });
-
 
 
         return view;
