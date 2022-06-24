@@ -9,10 +9,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.google.android.material.snackbar.Snackbar;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -72,18 +85,30 @@ public class AddFragment extends Fragment {
     };
     public ArrayList<String> spinnerList = new ArrayList<>(Arrays.asList(categories));
 
+
+    private Button doneBtn;
+
+    private EditText recipeNameEt, descriptionEt;
+    private String recipeNameTxt, descriptionTxt;
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_add, container, false);
-
-        cancelBtn = view.findViewById(R.id.btn_cancelRecipe);
-
+        
+        // spinner
         spinner = view.findViewById(R.id.spinner);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, spinnerList);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
+
+        // views
+        cancelBtn = view.findViewById(R.id.btn_cancelRecipe);
+        recipeNameEt = view.findViewById(R.id.et_recipeName);
+        descriptionEt = view.findViewById(R.id.et_recipeDescription);
+        doneBtn = view.findViewById(R.id.btn_doneRecipe);
 
 
         // cancel
@@ -96,6 +121,55 @@ public class AddFragment extends Fragment {
             }
         });
 
+
+        // done
+        doneBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // get texts
+                recipeNameTxt = recipeNameEt.getText().toString();
+                descriptionTxt = descriptionEt.getText().toString();
+                int category = spinner.getSelectedItemPosition() + 1;
+
+                // check if it is not empty
+
+                StringRequest stringRequest = new StringRequest(Request.Method.POST, Constants.URL_ADD_RECIPE, new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            //Toast.makeText(AddActivity.this, jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
+                            if (jsonObject.getString("success").equals("true")) {
+                                // success go back somewhere idk
+                                Snackbar.make(view, "inserted", Snackbar.LENGTH_LONG).show();
+                                recipeNameEt.setText("");
+                                descriptionEt.setText("");
+
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        //Toast.makeText(AddActivity.this, "Failed to Add Data",Toast.LENGTH_SHORT).show();
+                    }
+                }) {
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        Map<String, String> params = new HashMap<>();
+                        params.put("name", recipeNameTxt);
+                        params.put("description", descriptionTxt);
+                        params.put("category", Integer.toString(category));
+                        return params;
+                    }
+                };
+                RequestHandler.getInstance(getContext()).addToRequestQueue(stringRequest);
+
+            }
+        });
 
         return view;
     }
