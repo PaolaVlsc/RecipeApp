@@ -1,5 +1,7 @@
 package com.velasco.recipeapp;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -8,8 +10,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -61,6 +77,9 @@ public class AddInstruction extends Fragment {
 
     View view;
     private Button cancelBtn;
+    private Button doneBtn;
+    private EditText instructionEditText;
+    private String instructionTxt;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -68,6 +87,8 @@ public class AddInstruction extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_add_instruction, container, false);
         cancelBtn = view.findViewById(R.id.btn_cancel);
+        doneBtn = view.findViewById(R.id.btn_done);
+        instructionEditText = view.findViewById(R.id.et_instruction);
 
         Bundle bundle = this.getArguments();
         int id = bundle.getInt("recipeID");
@@ -78,6 +99,52 @@ public class AddInstruction extends Fragment {
             public void onClick(View v) {
 
                 getParentFragmentManager().beginTransaction().add(R.id.stepsFrag, new StepsFragment().newInstance(id)).commit();
+
+            }
+        });
+
+
+        // insert data to database
+        doneBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                // get text
+                instructionTxt = instructionEditText.getText().toString();
+
+                // check if it is not empty
+                StringRequest stringRequest = new StringRequest(Request.Method.POST, Constants.URL_ADD_INSTRUCTION, new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            //Toast.makeText(AddActivity.this, jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
+                            if (jsonObject.getString("success").equals("true")) {
+                                // success go back somewhere idk
+                                Snackbar.make(view, "inserted", Snackbar.LENGTH_LONG).show();
+                                instructionEditText.setText("");
+
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        //Toast.makeText(AddActivity.this, "Failed to Add Data",Toast.LENGTH_SHORT).show();
+                    }
+                }) {
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        Map<String, String> params = new HashMap<>();
+                        params.put("description", instructionTxt);
+                        params.put("recipe", Integer.toString(id));
+                        return params;
+                    }
+                };
+                RequestHandler.getInstance(getContext()).addToRequestQueue(stringRequest);
 
             }
         });

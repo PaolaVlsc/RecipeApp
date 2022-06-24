@@ -11,6 +11,7 @@ public class Constants {
     public static final String URL_SELECT_CATEGORY_DESSERTS = ROOT_URL + "select_category_desserts.php";
     public static final String URL_SELECT_RECIPE_STEPS = ROOT_URL + "select_recipe_steps.php";
     public static final String URL_SELECT_RECIPE_INGREDIENTS = ROOT_URL + "select_recipe_ingredients.php";
+    public static final String URL_ADD_INSTRUCTION = ROOT_URL + "add_instruction.php";
 
     public static final String URL_ADD = ROOT_URL + "add.php";
     public static final String URL_DELETE = ROOT_URL + "delete.php";
