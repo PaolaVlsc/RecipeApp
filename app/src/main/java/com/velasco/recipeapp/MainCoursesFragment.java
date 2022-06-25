@@ -125,8 +125,24 @@ public class MainCoursesFragment extends Fragment {
             @Override
             public void onItemClick(Recipe item) {
 
+
+                int id = item.getId();
+                Bundle bundle = new Bundle();
+                bundle.putInt("recipeID", id);
+
+                DetailsFragment detailsFragment = new DetailsFragment();
+                detailsFragment.setArguments(bundle);
+                getParentFragmentManager().beginTransaction().replace(R.id.categoriesFrag, detailsFragment).addToBackStack(null).commit();
+
+            }
+        }, new RecipeAdapter.OnItemLongClickListener() {
+            @Override
+            public void onItemLongClick(Recipe item) {
+                //display the dialog to confirm deletion
+                //showDialog(item);
             }
         });
+
 
         mRecyclerView.setAdapter(mRecipeAdapter);
 

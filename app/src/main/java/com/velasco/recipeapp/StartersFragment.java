@@ -1,6 +1,7 @@
 package com.velasco.recipeapp;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -8,6 +9,7 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -18,12 +20,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -125,7 +129,6 @@ public class StartersFragment extends Fragment {
             public void onItemClick(Recipe item) {
 
 
-
                 int id = item.getId();
                 Bundle bundle = new Bundle();
                 bundle.putInt("recipeID", id);
@@ -134,6 +137,12 @@ public class StartersFragment extends Fragment {
                 detailsFragment.setArguments(bundle);
                 getParentFragmentManager().beginTransaction().replace(R.id.categoriesFrag, detailsFragment).addToBackStack(null).commit();
 
+            }
+        }, new RecipeAdapter.OnItemLongClickListener() {
+            @Override
+            public void onItemLongClick(Recipe item) {
+                //display the dialog to confirm deletion
+                showDialog(item);
             }
         });
 
@@ -157,6 +166,62 @@ public class StartersFragment extends Fragment {
                 });
 
         return view;
+    }
+
+
+    private void showDialog(Recipe recipe) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        final CharSequence[] dialogItems = {"Edit Data", "Delete Data"};
+        builder.setTitle(recipe.getName());
+        builder.setItems(dialogItems, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                switch (i) {
+                    case 0:
+                        Snackbar.make(view, "Edit", Snackbar.LENGTH_LONG).show();
+                        break;
+                    case 1:
+                        AlertDialog.Builder builderDel = new AlertDialog.Builder(getContext());
+                        builderDel.setTitle(recipe.getName());
+                        builderDel.setMessage("Are you sure you want to delete this entry?" + Integer.toString(recipe.getId()));
+                        builderDel.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                StringRequest stringRequest = new StringRequest(Request.Method.POST, Constants.URL_DELETE_RECIPE, new Response.Listener<String>() {
+                                    @Override
+                                    public void onResponse(String response) {
+                                        Snackbar.make(view, "deleted" + recipe.getId(), Snackbar.LENGTH_LONG).show();
+                                        refreshList();
+                                    }
+                                }, new Response.ErrorListener() {
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+                                        Log.i("TEST", "onErrorResponse: " + error.toString());
+                                    }
+                                }) {
+                                    protected HashMap<String, String> getParams() throws AuthFailureError {
+                                        Map<String, String> params = new HashMap<>();
+                                        params.put("id", Integer.toString(recipe.getId()));
+                                        return (HashMap<String, String>) params;
+                                    }
+                                };
+                                RequestHandler.getInstance(getContext()).addToRequestQueue(stringRequest);
+                                dialogInterface.dismiss();
+                            }
+                        });
+
+                        builderDel.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                            }
+                        });
+                        builderDel.create().show();
+                        break;
+                }
+            }
+        });
+        builder.create().show();
     }
 
     private void refreshList() {

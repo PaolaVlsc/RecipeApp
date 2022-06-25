@@ -19,19 +19,27 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
         void onItemClick(Recipe item);
     }
 
+
+    public interface OnItemLongClickListener {
+        void onItemLongClick(Recipe item);
+    }
+
     // χαρακτηριστικά μιας Adapter κλάσης
     private LayoutInflater inflater;
     private Context context;
     private ArrayList<Recipe> mList;
     private final RecipeAdapter.OnItemClickListener listener;
+    private final OnItemLongClickListener longListener;
 
 
     // θα ζητηθεί constructor
-    public RecipeAdapter(Context context, ArrayList<Recipe> mList, RecipeAdapter.OnItemClickListener listener) {
+    public RecipeAdapter(Context context, ArrayList<Recipe> mList, RecipeAdapter.OnItemClickListener listener, OnItemLongClickListener longListener) {
         inflater = LayoutInflater.from(context); // φτιάχνει οπτικά αντικείμενα.
         this.context = context;
         this.mList = mList;
         this.listener = listener;
+        this.longListener = longListener;
+
     }
 
 
@@ -78,6 +86,15 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
                 @Override
                 public void onClick(View v) {
                     listener.onItemClick(recipe);
+                }
+            });
+
+
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    longListener.onItemLongClick(recipe);
+                    return true;
                 }
             });
 
