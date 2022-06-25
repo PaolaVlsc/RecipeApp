@@ -1,6 +1,7 @@
 package com.velasco.recipeapp.CRUD_Recipe.Sub_CRUD_Recipe;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -8,6 +9,7 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -19,6 +21,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -26,6 +29,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.velasco.recipeapp.Bean.Instruction;
@@ -121,6 +125,13 @@ public class StepsFragment extends Fragment {
             public void onItemClick(Instruction item) {
 
             }
+        }, new InstructionAdapter.OnItemLongClickListener() {
+
+            @Override
+            public void onItemLongClick(Instruction item) {
+                //display the dialog to confirm deletion
+                showDialog(item);
+            }
         });
 
 
@@ -162,6 +173,52 @@ public class StepsFragment extends Fragment {
 
 
         return view;
+    }
+
+    private void showDialog(Instruction instruction) {
+        //create and initialise an alert dialog
+        final androidx.appcompat.app.AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
+        alertDialog.setTitle("Delete entry");
+        alertDialog.setMessage("Are you sure you want to delete the selected contact?");
+
+        //set the dialog OK action
+        alertDialog.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                Snackbar.make(view, "YES WAS CLICKED" + instruction.getId(), Snackbar.LENGTH_LONG).show();
+
+                // Add delete functionality
+                StringRequest stringRequest = new StringRequest(Request.Method.POST, Constants.URL_DELETE_INSTRUCTION, new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        //Toast.makeText(MainActivity.this, "Successfully Deleted " + person.getName(), Toast.LENGTH_LONG).show();
+                        refreshList();
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i("TEST", "onErrorResponse: " + error.toString());
+                    }
+                }) {
+                    protected HashMap<String, String> getParams() throws AuthFailureError {
+                        Map<String, String> params = new HashMap<>();
+                        params.put("id",Integer.toString(instruction.getId()));
+                        return (HashMap<String, String>) params;
+                    }
+                };
+                RequestHandler.getInstance(getContext()).addToRequestQueue(stringRequest);
+                dialog.dismiss();
+            }
+        });
+
+        //set the dialog CANCEL action
+        alertDialog.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        //show the dialog
+        alertDialog.show();
     }
 
     private void refreshList() {

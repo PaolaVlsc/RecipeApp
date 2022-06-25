@@ -18,4 +18,5 @@ public class Constants {
     public static final String URL_DELETE_RECIPE = ROOT_URL + "delete_recipe.php";
     public static final String URL_UPDATE_RECIPE = ROOT_URL + "update_recipe.php";
 
+    public static final String URL_DELETE_INSTRUCTION = ROOT_URL + "delete_instruction.php";
 }
