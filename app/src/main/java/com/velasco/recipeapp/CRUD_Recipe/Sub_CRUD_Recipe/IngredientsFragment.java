@@ -118,7 +118,7 @@ public class IngredientsFragment extends Fragment {
             public void onItemClick(Ingredient item) {
 
             }
-        });
+        }, longListener);
 
 
         mRecyclerView.setAdapter(mIngredientAdapter);

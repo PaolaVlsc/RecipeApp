@@ -23,19 +23,25 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.Vi
         void onItemClick(Ingredient item);
     }
 
+    public interface OnItemLongClickListener {
+        void onItemLongClick(Ingredient item);
+    }
+
 
     // χαρακτηριστικά μιας Adapter κλάσης
     private LayoutInflater inflater;
     private Context context;
     private ArrayList<Ingredient> mList;
     private final IngredientAdapter.OnItemClickListener listener;
+    private final OnItemLongClickListener longListener;
 
 
-    public IngredientAdapter(Context context, ArrayList<Ingredient> mList, OnItemClickListener listener) {
+    public IngredientAdapter(Context context, ArrayList<Ingredient> mList, OnItemClickListener listener, OnItemLongClickListener longListener) {
         inflater = LayoutInflater.from(context); // φτιάχνει οπτικά αντικείμενα.
         this.context = context;
         this.mList = mList;
         this.listener = listener;
+        this.longListener = longListener;
     }
 
     @NonNull
@@ -87,6 +93,13 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.Vi
                 }
             });
 
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    longListener.onItemLongClick(ingredient);
+                    return true;
+                }
+            });
 
         }
     }
