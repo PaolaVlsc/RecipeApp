@@ -116,7 +116,9 @@ public class EditRecipeFragment extends Fragment {
         Recipe recipe = bundle.getParcelable("recipe");
         recipeNameTxt = recipe.getName();
         descriptionTxt = recipe.getDescription();
-
+        recipeNameEt.setText(recipeNameTxt);
+        descriptionEt.setText(descriptionTxt);
+        spinner.setSelection(recipe.getCategory()-1);
 
         updateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
