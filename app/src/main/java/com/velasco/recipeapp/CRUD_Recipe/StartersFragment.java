@@ -122,6 +122,8 @@ public class StartersFragment extends Fragment {
 
         // animation: fade in , fade out
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        Bundle bundle = this.getArguments();
+        int category_id = bundle.getInt("category_id");
 
 
         mRecipeList = new ArrayList<>();
@@ -146,14 +148,14 @@ public class StartersFragment extends Fragment {
             @Override
             public void onItemLongClick(Recipe item) {
                 //display the dialog to confirm deletion
-                showDialog(item);
+                showDialog(item, category_id);
             }
         });
 
         mRecyclerView.setAdapter(mRecipeAdapter);
 
 
-        refreshList();
+        refreshList(category_id);
         mActivityResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 new ActivityResultCallback<ActivityResult>() {
@@ -164,7 +166,7 @@ public class StartersFragment extends Fragment {
                             Log.i("TEST", "onActivityResult: ");
                             Intent data = result.getData();
                             Log.i("TEST", "onActivityResult: DATA: " + data.getData().toString());
-                            refreshList();
+                            refreshList(category_id);
                         }
                     }
                 });
@@ -173,7 +175,7 @@ public class StartersFragment extends Fragment {
     }
 
 
-    private void showDialog(Recipe recipe) {
+    private void showDialog(Recipe recipe, int category_id) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         final CharSequence[] dialogItems = {"Edit Data", "Delete Data"};
         builder.setTitle(recipe.getName());
@@ -202,7 +204,7 @@ public class StartersFragment extends Fragment {
                                     @Override
                                     public void onResponse(String response) {
                                         Snackbar.make(view, "deleted" + recipe.getId(), Snackbar.LENGTH_LONG).show();
-                                        refreshList();
+                                        refreshList(category_id);
                                     }
                                 }, new Response.ErrorListener() {
                                     @Override
@@ -235,9 +237,10 @@ public class StartersFragment extends Fragment {
         builder.create().show();
     }
 
-    private void refreshList() {
+    private void refreshList(int category_id) {
+
         mRecipeList.clear();
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constants.URL_SELECT_CATEGORY_STARTERS, new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constants.URL_SELECT_CATEGORY, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {
@@ -271,7 +274,7 @@ public class StartersFragment extends Fragment {
         }) {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
-                params.put("name", "kl");
+                params.put("category", Integer.toString(category_id));
                 return params;
             }
         };

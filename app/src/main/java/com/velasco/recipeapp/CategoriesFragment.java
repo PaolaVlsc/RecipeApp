@@ -127,16 +127,24 @@ public class CategoriesFragment extends Fragment {
         mCategoryAdapter = new CategoryAdapter(getContext(), mCategoryList, new CategoryAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Category item) {
-                if (item.getId() == 1) {
-                    StartersFragment startersFragment = new StartersFragment();
-                    getParentFragmentManager().beginTransaction().addToBackStack(null).add(R.id.categoriesFrag, startersFragment).commit();
-                } else if (item.getId() == 2) {
-                    MainCoursesFragment mainCoursesFragment = new MainCoursesFragment();
-                    getParentFragmentManager().beginTransaction().addToBackStack(null).add(R.id.categoriesFrag, mainCoursesFragment).commit();
-                } else {
-                    DessertsFragment dessertsFragment = new DessertsFragment();
-                    getParentFragmentManager().beginTransaction().addToBackStack(null).add(R.id.categoriesFrag, dessertsFragment).commit();
-                }
+
+                Bundle bundle = new Bundle();
+                bundle.putInt("category_id",  item.getId());
+
+                StartersFragment startersFragment = new StartersFragment();
+                startersFragment.setArguments(bundle);
+                getParentFragmentManager().beginTransaction().addToBackStack(null).add(R.id.categoriesFrag, startersFragment).commit();
+
+//                if (item.getId() == 1) {
+//                    StartersFragment startersFragment = new StartersFragment();
+//                    getParentFragmentManager().beginTransaction().addToBackStack(null).add(R.id.categoriesFrag, startersFragment).commit();
+//                } else if (item.getId() == 2) {
+//                    MainCoursesFragment mainCoursesFragment = new MainCoursesFragment();
+//                    getParentFragmentManager().beginTransaction().addToBackStack(null).add(R.id.categoriesFrag, mainCoursesFragment).commit();
+//                } else {
+//                    DessertsFragment dessertsFragment = new DessertsFragment();
+//                    getParentFragmentManager().beginTransaction().addToBackStack(null).add(R.id.categoriesFrag, dessertsFragment).commit();
+//                }
             }
         });
 

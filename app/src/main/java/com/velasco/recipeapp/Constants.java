@@ -6,7 +6,7 @@ public class Constants {
 
     public static final String ROOT_URL = URL + "Recipes/";
     public static final String URL_SELECT_CATEGORIES = ROOT_URL + "select_categories.php";
-    public static final String URL_SELECT_CATEGORY_STARTERS = ROOT_URL + "select_category_starters.php";
+    public static final String URL_SELECT_CATEGORY = ROOT_URL + "select_category.php";
     public static final String URL_SELECT_CATEGORY_MAINCOURSES = ROOT_URL + "select_category_maincourses.php";
     public static final String URL_SELECT_CATEGORY_DESSERTS = ROOT_URL + "select_category_desserts.php";
     public static final String URL_SELECT_RECIPE_STEPS = ROOT_URL + "select_recipe_steps.php";
