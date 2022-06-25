@@ -178,7 +178,14 @@ public class StartersFragment extends Fragment {
             public void onClick(DialogInterface dialogInterface, int i) {
                 switch (i) {
                     case 0:
-                        Snackbar.make(view, "Edit", Snackbar.LENGTH_LONG).show();
+                       // Snackbar.make(view, "Edit", Snackbar.LENGTH_LONG).show();
+                        Bundle bundle = new Bundle();
+                        bundle.putParcelable("recipe", recipe);
+                        EditRecipeFragment editRecipeFragment = new EditRecipeFragment();
+
+                        editRecipeFragment.setArguments(bundle);
+                        getParentFragmentManager().beginTransaction().replace(R.id.startersFrag, editRecipeFragment).commit();
+
                         break;
                     case 1:
                         AlertDialog.Builder builderDel = new AlertDialog.Builder(getContext());
