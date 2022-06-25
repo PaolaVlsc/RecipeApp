@@ -97,7 +97,7 @@ public class AddFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_add, container, false);
-        
+
         // spinner
         spinner = view.findViewById(R.id.spinner);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, spinnerList);
@@ -140,10 +140,19 @@ public class AddFragment extends Fragment {
                             JSONObject jsonObject = new JSONObject(response);
                             //Toast.makeText(AddActivity.this, jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
                             if (jsonObject.getString("success").equals("true")) {
+                                int recipe_id = Integer.parseInt(jsonObject.getString("inserted_id"));
                                 // success go back somewhere idk
-                                Snackbar.make(view, "inserted", Snackbar.LENGTH_LONG).show();
-                                recipeNameEt.setText("");
-                                descriptionEt.setText("");
+//                                Snackbar.make(view, "inserted" + recipe_id, Snackbar.LENGTH_LONG).show();
+//                                recipeNameEt.setText("");
+//                                descriptionEt.setText("");
+
+                                Bundle bundle = new Bundle();
+                                bundle.putInt("recipeID", recipe_id);
+
+                                DetailsFragment detailsFragment = new DetailsFragment();
+                                detailsFragment.setArguments(bundle);
+                                getParentFragmentManager().beginTransaction().replace(R.id.addFrag, detailsFragment).addToBackStack(null).commit();
+
 
                             }
                         } catch (JSONException e) {
