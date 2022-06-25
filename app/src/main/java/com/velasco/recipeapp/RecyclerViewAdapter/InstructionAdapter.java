@@ -22,18 +22,24 @@ public class InstructionAdapter extends RecyclerView.Adapter<InstructionAdapter.
         void onItemClick(Instruction item);
     }
 
+    public interface OnItemLongClickListener {
+        void onItemLongClick(Instruction item);
+    }
+
     // χαρακτηριστικά μιας Adapter κλάσης
     private LayoutInflater inflater;
     private Context context;
     private ArrayList<Instruction> mList;
     private final OnItemClickListener listener;
+    private final OnItemLongClickListener longListener;
 
     // θα ζητηθεί constructor
-    public InstructionAdapter(Context context, ArrayList<Instruction> mList, OnItemClickListener listener) {
+    public InstructionAdapter(Context context, ArrayList<Instruction> mList, OnItemClickListener listener, OnItemLongClickListener longListener) {
         inflater = LayoutInflater.from(context); // φτιάχνει οπτικά αντικείμενα.
         this.context = context;
         this.mList = mList;
         this.listener = listener;
+        this.longListener = longListener;
     }
 
     @NonNull
@@ -78,6 +84,16 @@ public class InstructionAdapter extends RecyclerView.Adapter<InstructionAdapter.
                     listener.onItemClick(instruction);
                 }
             });
+
+
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    longListener.onItemLongClick(instruction);
+                    return true;
+                }
+            });
+
 
         }
     }
