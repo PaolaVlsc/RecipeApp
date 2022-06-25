@@ -120,7 +120,12 @@ public class IngredientsFragment extends Fragment {
         mIngredientAdapter = new IngredientAdapter(getContext(), mIngredientList, new IngredientAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Ingredient item) {
-
+                // edit instruction
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("ingredientID", item);
+                EditIngredientFragment editIngredientFragment = new EditIngredientFragment();
+                editIngredientFragment.setArguments(bundle);
+                getParentFragmentManager().beginTransaction().replace(R.id.ingredientsFrag, editIngredientFragment).commit();
             }
         }, new IngredientAdapter.OnItemLongClickListener() {
             @Override

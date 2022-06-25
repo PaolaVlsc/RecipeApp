@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/editIngredientFrag"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".CRUD_Recipe.Sub_CRUD_Recipe.EditIngredientFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <EditText
+            android:id="@+id/et_quantity"
+            android:layout_width="103dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="52dp"
+            android:ems="10"
+            android:hint="quantity"
+            android:inputType="numberDecimal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/et_measurement"
+            android:layout_width="208dp"
+            android:layout_height="48dp"
+            android:layout_marginEnd="32dp"
+            android:ems="10"
+            android:hint="measurement"
+            android:inputType="textPersonName"
+            app:layout_constraintBottom_toBottomOf="@+id/et_quantity"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/et_quantity"
+            app:layout_constraintVertical_bias="0.0" />
+
+
+        <EditText
+            android:id="@+id/et_ingredientName"
+            android:layout_width="344dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="32dp"
+            android:ems="10"
+            android:hint="Ingredient's name"
+            android:inputType="textPersonName"
+            app:layout_constraintEnd_toEndOf="@+id/et_measurement"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/et_quantity"
+            app:layout_constraintTop_toBottomOf="@+id/et_quantity" />
+
+        <Button
+            android:id="@+id/btn_doneIngredient"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="52dp"
+            android:text="DONE"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_cancelIngredient"
+            app:layout_constraintEnd_toEndOf="@+id/et_ingredientName"
+            app:layout_constraintTop_toTopOf="@+id/btn_cancelIngredient"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <Button
+            android:id="@+id/btn_cancelIngredient"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="52dp"
+            android:layout_marginTop="60dp"
+            android:text="CANCEL"
+            app:layout_constraintStart_toStartOf="@+id/et_ingredientName"
+            app:layout_constraintTop_toBottomOf="@+id/et_ingredientName" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</FrameLayout>
