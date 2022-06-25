@@ -140,17 +140,17 @@ public class EditRecipeFragment extends Fragment {
                             if (jsonObject.getString("success").equals("true")) {
 //                               int recipe_id = Integer.parseInt(jsonObject.getString("inserted_id"));
                                 // success go back somewhere idk
-                                Snackbar.make(view, "updated" + recipe.getId(), Snackbar.LENGTH_LONG).show();
+//                                Snackbar.make(view, "updated" + recipe.getId(), Snackbar.LENGTH_LONG).show();
 //                                recipeNameEt.setText("");
 //                                descriptionEt.setText("");
 
-//                                Bundle bundle = new Bundle();
-//                                bundle.putInt("recipeID", recipe_id);
-//
-//                                DetailsFragment detailsFragment = new DetailsFragment();
-//                                detailsFragment.setArguments(bundle);
-//                                getParentFragmentManager().beginTransaction().replace(R.id.addFrag, detailsFragment).addToBackStack(null).commit();
-//
+                                Bundle bundle = new Bundle();
+                                bundle.putInt("recipeID", recipe.getId());
+
+                                DetailsFragment detailsFragment = new DetailsFragment();
+                                detailsFragment.setArguments(bundle);
+                                getParentFragmentManager().beginTransaction().replace(R.id.editRecipeFrag, detailsFragment).addToBackStack(null).commit();
+
 
                             }
                         } catch (JSONException e) {
