@@ -1,4 +1,4 @@
-package com.velasco.recipeapp.CRUD_Recipe;
+package com.velasco.recipeapp.CRUD_Recipe.Sub_CRUD_Recipe;
 
 import android.os.Bundle;
 
@@ -7,17 +7,17 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.velasco.recipeapp.Bean.Recipe;
+import com.google.android.material.snackbar.Snackbar;
+import com.velasco.recipeapp.Bean.Instruction;
+import com.velasco.recipeapp.CRUD_Recipe.DetailsFragment;
 import com.velasco.recipeapp.Constants;
 import com.velasco.recipeapp.R;
 import com.velasco.recipeapp.Singleton.RequestHandler;
@@ -25,17 +25,15 @@ import com.velasco.recipeapp.Singleton.RequestHandler;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link EditRecipeFragment#newInstance} factory method to
+ * Use the {@link EditInstructionFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class EditRecipeFragment extends Fragment {
+public class EditInstructionFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -46,7 +44,7 @@ public class EditRecipeFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public EditRecipeFragment() {
+    public EditInstructionFragment() {
         // Required empty public constructor
     }
 
@@ -56,11 +54,11 @@ public class EditRecipeFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment EditRecipeFragment.
+     * @return A new instance of fragment EditInstructionFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static EditRecipeFragment newInstance(String param1, String param2) {
-        EditRecipeFragment fragment = new EditRecipeFragment();
+    public static EditInstructionFragment newInstance(String param1, String param2) {
+        EditInstructionFragment fragment = new EditInstructionFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -77,85 +75,51 @@ public class EditRecipeFragment extends Fragment {
         }
     }
 
-
     View view;
-
     private Button cancelBtn;
-    private Spinner spinner;
-    private String[] categories = {
-            "Starters",
-            "Main Courses",
-            "Desserts"
-    };
-    public ArrayList<String> spinnerList = new ArrayList<>(Arrays.asList(categories));
-
-
     private Button updateBtn;
-
-    private EditText recipeNameEt, descriptionEt;
-    private String recipeNameTxt, descriptionTxt;
+    private EditText instructionEditText;
+    private String instructionTxt;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_edit_recipe, container, false);
-
-        // spinner
-        spinner = view.findViewById(R.id.spinner);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, spinnerList);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
+        view = inflater.inflate(R.layout.fragment_edit_instruction, container, false);
 
         // views
-        cancelBtn = view.findViewById(R.id.btn_cancelRecipe);
-        recipeNameEt = view.findViewById(R.id.et_recipeName);
-        descriptionEt = view.findViewById(R.id.et_recipeDescription);
-        updateBtn = view.findViewById(R.id.btn_updateRecipe);
+        cancelBtn = view.findViewById(R.id.btn_cancel);
+        updateBtn = view.findViewById(R.id.btn_updateInstruction);
+        instructionEditText = view.findViewById(R.id.et_instruction);
 
-        // FIXME : elegxos an uparxei
+        // get data from previous fragment
         Bundle bundle = this.getArguments();
-        Recipe recipe = bundle.getParcelable("recipe");
+        Instruction instruction = bundle.getParcelable("instructionID");
 
-        recipeNameTxt = recipe.getName();
-        descriptionTxt = recipe.getDescription();
-        recipeNameEt.setText(recipeNameTxt);
-        descriptionEt.setText(descriptionTxt);
-        spinner.setSelection(recipe.getCategory()-1);
+        instructionTxt = instruction.getDescription();
+        instructionEditText.setText(instructionTxt);
+
 
         updateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // get texts
-                recipeNameTxt = recipeNameEt.getText().toString();
-                descriptionTxt = descriptionEt.getText().toString();
-                int category = spinner.getSelectedItemPosition() + 1;
-
-                // check if it is not empty
+                // get text
+                instructionTxt = instructionEditText.getText().toString();
+                // check if it's empty or not
 
                 // send query
-                StringRequest stringRequest = new StringRequest(Request.Method.POST, Constants.URL_UPDATE_RECIPE, new Response.Listener<String>() {
+                StringRequest stringRequest = new StringRequest(Request.Method.POST, Constants.URL_UPDATE_INSTRUCTION, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         try {
                             JSONObject jsonObject = new JSONObject(response);
+
                             //Toast.makeText(AddActivity.this, jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
                             if (jsonObject.getString("success").equals("true")) {
-//                               int recipe_id = Integer.parseInt(jsonObject.getString("inserted_id"));
-                                // success go back somewhere idk
-//                                Snackbar.make(view, "updated" + recipe.getId(), Snackbar.LENGTH_LONG).show();
-//                                recipeNameEt.setText("");
-//                                descriptionEt.setText("");
 
-                                Bundle bundle = new Bundle();
-                                bundle.putInt("recipeID", recipe.getId());
-
-                                DetailsFragment detailsFragment = new DetailsFragment();
-                                detailsFragment.setArguments(bundle);
-                                getParentFragmentManager().beginTransaction().replace(R.id.editRecipeFrag, detailsFragment).addToBackStack(null).commit();
-
-
+                                //Snackbar.make(view, "updated" + instruction.getId(), Snackbar.LENGTH_LONG).show();
+                                getParentFragmentManager().beginTransaction().add(R.id.stepsFrag, new StepsFragment().newInstance(instruction.getRecipe())).commit();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -170,18 +134,24 @@ public class EditRecipeFragment extends Fragment {
                 }) {
                     protected Map<String, String> getParams() throws AuthFailureError {
                         Map<String, String> params = new HashMap<>();
-                        params.put("id", Integer.toString(recipe.getId()));
-                        params.put("name", recipeNameTxt);
-                        params.put("description", descriptionTxt);
-                        params.put("category", Integer.toString(category));
+                        params.put("id", Integer.toString(instruction.getId()));
+                        params.put("description", instructionEditText.getText().toString());
                         return params;
                     }
                 };
                 RequestHandler.getInstance(getContext()).addToRequestQueue(stringRequest);
 
+
             }
         });
 
+
+        cancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getParentFragmentManager().beginTransaction().add(R.id.stepsFrag, new StepsFragment().newInstance(instruction.getRecipe())).commit();
+            }
+        });
         return view;
     }
 }

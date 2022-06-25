@@ -33,6 +33,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.velasco.recipeapp.Bean.Instruction;
+import com.velasco.recipeapp.CRUD_Recipe.EditRecipeFragment;
 import com.velasco.recipeapp.Constants;
 import com.velasco.recipeapp.R;
 import com.velasco.recipeapp.RecyclerViewAdapter.InstructionAdapter;
@@ -123,6 +124,12 @@ public class StepsFragment extends Fragment {
         mInstructionAdapter = new InstructionAdapter(getContext(), mInstructionList, new InstructionAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Instruction item) {
+                // edit instruction
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("instructionID", item);
+                EditInstructionFragment editInstructionFragment = new EditInstructionFragment();
+                editInstructionFragment.setArguments(bundle);
+                getParentFragmentManager().beginTransaction().replace(R.id.stepsFrag, editInstructionFragment).commit();
 
             }
         }, new InstructionAdapter.OnItemLongClickListener() {
@@ -201,7 +208,7 @@ public class StepsFragment extends Fragment {
                 }) {
                     protected HashMap<String, String> getParams() throws AuthFailureError {
                         Map<String, String> params = new HashMap<>();
-                        params.put("id",Integer.toString(instruction.getId()));
+                        params.put("id", Integer.toString(instruction.getId()));
                         return (HashMap<String, String>) params;
                     }
                 };
