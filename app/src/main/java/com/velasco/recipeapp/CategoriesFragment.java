@@ -18,7 +18,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -27,6 +26,12 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.velasco.recipeapp.Bean.Category;
+import com.velasco.recipeapp.CRUD_Recipe.DessertsFragment;
+import com.velasco.recipeapp.CRUD_Recipe.MainCoursesFragment;
+import com.velasco.recipeapp.CRUD_Recipe.StartersFragment;
+import com.velasco.recipeapp.RecyclerViewAdapter.CategoryAdapter;
+import com.velasco.recipeapp.Singleton.RequestHandler;
 
 import org.json.JSONArray;
 import org.json.JSONException;

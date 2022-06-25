@@ -1,4 +1,4 @@
-package com.velasco.recipeapp;
+package com.velasco.recipeapp.CRUD_Recipe.Sub_CRUD_Recipe;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -28,6 +28,11 @@ import com.android.volley.toolbox.StringRequest;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.velasco.recipeapp.Bean.Instruction;
+import com.velasco.recipeapp.Constants;
+import com.velasco.recipeapp.R;
+import com.velasco.recipeapp.RecyclerViewAdapter.InstructionAdapter;
+import com.velasco.recipeapp.Singleton.RequestHandler;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -40,22 +45,20 @@ import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link IngredientsFragment#newInstance} factory method to
+ * Use the {@link StepsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class IngredientsFragment extends Fragment {
-
+public class StepsFragment extends Fragment {
 
     private static final String RECIPE_ID = "recipe_id";
     private int mRecipeId;
 
-
-    public IngredientsFragment() {
+    public StepsFragment() {
         // Required empty public constructor
     }
 
-    public static IngredientsFragment newInstance(int recipeID) {
-        IngredientsFragment fragment = new IngredientsFragment();
+    public static StepsFragment newInstance(int recipeID) {
+        StepsFragment fragment = new StepsFragment();
         Bundle args = new Bundle();
         args.putInt(RECIPE_ID, recipeID);
         fragment.setArguments(args);
@@ -72,24 +75,29 @@ public class IngredientsFragment extends Fragment {
 
     /********************** START OF CODE *********************/
     View view;
+    private TextView recipeId;
+    private FloatingActionButton floatingActionButton;
 
-    private ArrayList<Ingredient> mIngredientList;
+
+    private ArrayList<Instruction> mInstructionList;
     private RecyclerView mRecyclerView;
-    private IngredientAdapter mIngredientAdapter;
+    private InstructionAdapter mInstructionAdapter;
 
     private ActivityResultLauncher<Intent> mActivityResultLauncher;
 
-    // add button
-    private FloatingActionButton floatingActionButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_ingredients, container, false);
-
-        mRecyclerView = view.findViewById(R.id.rv_ingredients);
+        view = inflater.inflate(R.layout.fragment_steps, container, false);
         floatingActionButton = view.findViewById(R.id.fab);
+
+        // recipeId = view.findViewById(R.id.recipeId);
+        // recipeId.setText(Integer.toString(mRecipeId));
+
+
+        mRecyclerView = view.findViewById(R.id.rv_instructions);
 
         // Layout Manager
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());  // Κάθε item είναι μια γραμμή
@@ -106,18 +114,17 @@ public class IngredientsFragment extends Fragment {
 
         /*************************/
 
+        mInstructionList = new ArrayList<>();
 
-        mIngredientList = new ArrayList<>();
-
-        mIngredientAdapter = new IngredientAdapter(getContext(), mIngredientList, new IngredientAdapter.OnItemClickListener() {
+        mInstructionAdapter = new InstructionAdapter(getContext(), mInstructionList, new InstructionAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(Ingredient item) {
+            public void onItemClick(Instruction item) {
 
             }
         });
 
 
-        mRecyclerView.setAdapter(mIngredientAdapter);
+        mRecyclerView.setAdapter(mInstructionAdapter);
 
         refreshList();
         mActivityResultLauncher = registerForActivityResult(
@@ -135,26 +142,32 @@ public class IngredientsFragment extends Fragment {
                     }
                 });
 
+
         // add instruction
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
                 int id = mRecipeId;
                 Bundle bundle = new Bundle();
                 bundle.putInt("recipeID", id);
 
-                AddIngredientFragment addIngredientFragment = new AddIngredientFragment();
-                addIngredientFragment.setArguments(bundle);
-                getParentFragmentManager().beginTransaction().replace(R.id.ingredientsFrag, addIngredientFragment).addToBackStack(null).commit();
+                AddInstructionFragment addInstructionFragment = new AddInstructionFragment();
+                addInstructionFragment.setArguments(bundle);
+
+                getParentFragmentManager().beginTransaction().replace(R.id.stepsFrag, addInstructionFragment).addToBackStack(null).commit();
             }
         });
+
 
         return view;
     }
 
     private void refreshList() {
-        mIngredientList.clear();
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constants.URL_SELECT_RECIPE_INGREDIENTS, new Response.Listener<String>() {
+
+        mInstructionList.clear();
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constants.URL_SELECT_RECIPE_STEPS, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {
@@ -169,12 +182,12 @@ public class IngredientsFragment extends Fragment {
                     Log.i("TEST", "onResponse: RESPONSE=" + response);
 
 
-                    Type type = new TypeToken<ArrayList<Ingredient>>() {
+                    Type type = new TypeToken<ArrayList<Instruction>>() {
                     }.getType();
-                    ArrayList<Ingredient> ingredientArrayList = gson.fromJson(jsonArray.toString(), type);
-                    mIngredientList.addAll(ingredientArrayList);
+                    ArrayList<Instruction> instructionArrayList = gson.fromJson(jsonArray.toString(), type);
+                    mInstructionList.addAll(instructionArrayList);
 
-                    mRecyclerView.setAdapter(mIngredientAdapter);
+                    mRecyclerView.setAdapter(mInstructionAdapter);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -193,4 +206,5 @@ public class IngredientsFragment extends Fragment {
         };
         RequestHandler.getInstance(getContext()).addToRequestQueue(stringRequest);
     }
+
 }

@@ -1,11 +1,13 @@
-package com.velasco.recipeapp;
+package com.velasco.recipeapp.CRUD_Recipe;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
+
+import com.velasco.recipeapp.CRUD_Recipe.Sub_CRUD_Recipe.IngredientsFragment;
+import com.velasco.recipeapp.CRUD_Recipe.Sub_CRUD_Recipe.StepsFragment;
 
 public class MyFragmentAdapter extends FragmentStateAdapter {
 

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/purple_200"
-    tools:context=".IngredientsFragment"
+    tools:context=".CRUD_Recipe.Sub_CRUD_Recipe.IngredientsFragment"
     android:id="@+id/ingredientsFrag">
 
     <!-- Recycler View για την εμφάνιση των κατηγοριών -->

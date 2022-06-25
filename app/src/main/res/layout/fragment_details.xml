@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white"
-    tools:context=".DetailsFragment">
+    tools:context=".CRUD_Recipe.DetailsFragment">
 
     <!-- STEP 17: Add constraint layout and then tablayout -->
     <androidx.constraintlayout.widget.ConstraintLayout

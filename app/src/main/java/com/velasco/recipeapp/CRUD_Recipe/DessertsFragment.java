@@ -1,4 +1,4 @@
-package com.velasco.recipeapp;
+package com.velasco.recipeapp.CRUD_Recipe;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -26,6 +26,11 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.velasco.recipeapp.Bean.Recipe;
+import com.velasco.recipeapp.Constants;
+import com.velasco.recipeapp.R;
+import com.velasco.recipeapp.RecyclerViewAdapter.RecipeAdapter;
+import com.velasco.recipeapp.Singleton.RequestHandler;
 
 import org.json.JSONArray;
 import org.json.JSONException;

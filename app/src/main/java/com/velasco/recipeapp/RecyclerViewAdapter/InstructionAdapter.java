@@ -1,4 +1,4 @@
-package com.velasco.recipeapp;
+package com.velasco.recipeapp.RecyclerViewAdapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,6 +9,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.velasco.recipeapp.Bean.Instruction;
+import com.velasco.recipeapp.R;
 
 import java.util.ArrayList;
 

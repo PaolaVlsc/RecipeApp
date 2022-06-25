@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".DessertsFragment"
+    tools:context=".CRUD_Recipe.DessertsFragment"
     android:background="@color/white">
 
     <!-- Recycler View για την εμφάνιση των desserts -->

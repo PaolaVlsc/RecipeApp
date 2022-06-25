@@ -1,4 +1,4 @@
-package com.velasco.recipeapp;
+package com.velasco.recipeapp.CRUD_Recipe;
 
 import android.os.Bundle;
 
@@ -17,7 +17,9 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.velasco.recipeapp.CRUD_Recipe.DetailsFragment;
+import com.velasco.recipeapp.Bean.Recipe;
+import com.velasco.recipeapp.Constants;
+import com.velasco.recipeapp.R;
 import com.velasco.recipeapp.Singleton.RequestHandler;
 
 import org.json.JSONException;
@@ -30,10 +32,10 @@ import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link AddFragment#newInstance} factory method to
+ * Use the {@link EditRecipeFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AddFragment extends Fragment {
+public class EditRecipeFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -44,7 +46,7 @@ public class AddFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public AddFragment() {
+    public EditRecipeFragment() {
         // Required empty public constructor
     }
 
@@ -54,11 +56,11 @@ public class AddFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment AddFragment.
+     * @return A new instance of fragment EditRecipeFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static AddFragment newInstance(String param1, String param2) {
-        AddFragment fragment = new AddFragment();
+    public static EditRecipeFragment newInstance(String param1, String param2) {
+        EditRecipeFragment fragment = new EditRecipeFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -77,6 +79,7 @@ public class AddFragment extends Fragment {
 
 
     View view;
+
     private Button cancelBtn;
     private Spinner spinner;
     private String[] categories = {
@@ -87,7 +90,7 @@ public class AddFragment extends Fragment {
     public ArrayList<String> spinnerList = new ArrayList<>(Arrays.asList(categories));
 
 
-    private Button doneBtn;
+    private Button updateBtn;
 
     private EditText recipeNameEt, descriptionEt;
     private String recipeNameTxt, descriptionTxt;
@@ -97,7 +100,7 @@ public class AddFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_add, container, false);
+        view = inflater.inflate(R.layout.fragment_edit_recipe, container, false);
 
         // spinner
         spinner = view.findViewById(R.id.spinner);
@@ -109,22 +112,18 @@ public class AddFragment extends Fragment {
         cancelBtn = view.findViewById(R.id.btn_cancelRecipe);
         recipeNameEt = view.findViewById(R.id.et_recipeName);
         descriptionEt = view.findViewById(R.id.et_recipeDescription);
-        doneBtn = view.findViewById(R.id.btn_doneRecipe);
+        updateBtn = view.findViewById(R.id.btn_updateRecipe);
 
+        // FIXME : elegxos an uparxei
+        Bundle bundle = this.getArguments();
+        Recipe recipe = bundle.getParcelable("recipe");
+        recipeNameTxt = recipe.getName();
+        descriptionTxt = recipe.getDescription();
+        recipeNameEt.setText(recipeNameTxt);
+        descriptionEt.setText(descriptionTxt);
+        spinner.setSelection(recipe.getCategory()-1);
 
-        // cancel
-        cancelBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                CategoriesFragment categoriesFragment = new CategoriesFragment();
-                getParentFragmentManager().beginTransaction().replace(R.id.addFrag, categoriesFragment).commit();
-            }
-        });
-
-
-        // done
-        doneBtn.setOnClickListener(new View.OnClickListener() {
+        updateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // get texts
@@ -134,32 +133,32 @@ public class AddFragment extends Fragment {
 
                 // check if it is not empty
 
-                StringRequest stringRequest = new StringRequest(Request.Method.POST, Constants.URL_ADD_RECIPE, new Response.Listener<String>() {
+                // send query
+                StringRequest stringRequest = new StringRequest(Request.Method.POST, Constants.URL_UPDATE_RECIPE, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         try {
                             JSONObject jsonObject = new JSONObject(response);
                             //Toast.makeText(AddActivity.this, jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
                             if (jsonObject.getString("success").equals("true")) {
-                                int recipe_id = Integer.parseInt(jsonObject.getString("inserted_id"));
+//                               int recipe_id = Integer.parseInt(jsonObject.getString("inserted_id"));
                                 // success go back somewhere idk
-//                                Snackbar.make(view, "inserted" + recipe_id, Snackbar.LENGTH_LONG).show();
+//                                Snackbar.make(view, "updated" + recipe.getId(), Snackbar.LENGTH_LONG).show();
 //                                recipeNameEt.setText("");
 //                                descriptionEt.setText("");
 
                                 Bundle bundle = new Bundle();
-                                bundle.putInt("recipeID", recipe_id);
+                                bundle.putInt("recipeID", recipe.getId());
 
                                 DetailsFragment detailsFragment = new DetailsFragment();
                                 detailsFragment.setArguments(bundle);
-                                getParentFragmentManager().beginTransaction().replace(R.id.addFrag, detailsFragment).addToBackStack(null).commit();
+                                getParentFragmentManager().beginTransaction().replace(R.id.editRecipeFrag, detailsFragment).addToBackStack(null).commit();
 
 
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-
 
                     }
                 }, new Response.ErrorListener() {
@@ -170,6 +169,7 @@ public class AddFragment extends Fragment {
                 }) {
                     protected Map<String, String> getParams() throws AuthFailureError {
                         Map<String, String> params = new HashMap<>();
+                        params.put("id", Integer.toString(recipe.getId()));
                         params.put("name", recipeNameTxt);
                         params.put("description", descriptionTxt);
                         params.put("category", Integer.toString(category));
