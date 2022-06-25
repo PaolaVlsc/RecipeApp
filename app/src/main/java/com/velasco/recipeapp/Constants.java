@@ -10,8 +10,7 @@ public class Constants {
 
     public static final String URL_SELECT_RECIPE_STEPS = ROOT_URL + "select_recipe_steps.php";
     public static final String URL_SELECT_RECIPE_INGREDIENTS = ROOT_URL + "select_recipe_ingredients.php";
-    public static final String URL_ADD_INSTRUCTION = ROOT_URL + "add_instruction.php";
-    public static final String URL_ADD_INGREDIENT = ROOT_URL + "add_ingredient.php";
+
 
 
     public static final String URL_ADD_RECIPE = ROOT_URL + "add_recipe.php";
@@ -20,4 +19,10 @@ public class Constants {
 
     public static final String URL_DELETE_INSTRUCTION = ROOT_URL + "delete_instruction.php";
     public static final String URL_UPDATE_INSTRUCTION = ROOT_URL + "update_instruction.php";
+    public static final String URL_ADD_INSTRUCTION = ROOT_URL + "add_instruction.php";
+
+    public static final String URL_ADD_INGREDIENT = ROOT_URL + "add_ingredient.php";
+    public static final String URL_DELETE_INGREDIENT =  ROOT_URL + "delete_ingredient.php";
+    public static final String URL_UPDATE_INGREDIENT= ROOT_URL + "update_ingredient.php";
+
 }
