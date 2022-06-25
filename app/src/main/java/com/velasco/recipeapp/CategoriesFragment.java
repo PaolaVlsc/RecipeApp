@@ -27,9 +27,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.velasco.recipeapp.Bean.Category;
-import com.velasco.recipeapp.CRUD_Recipe.DessertsFragment;
-import com.velasco.recipeapp.CRUD_Recipe.MainCoursesFragment;
-import com.velasco.recipeapp.CRUD_Recipe.StartersFragment;
+import com.velasco.recipeapp.CRUD_Recipe.RecipeFragment;
 import com.velasco.recipeapp.RecyclerViewAdapter.CategoryAdapter;
 import com.velasco.recipeapp.Singleton.RequestHandler;
 
@@ -131,9 +129,9 @@ public class CategoriesFragment extends Fragment {
                 Bundle bundle = new Bundle();
                 bundle.putInt("category_id",  item.getId());
 
-                StartersFragment startersFragment = new StartersFragment();
-                startersFragment.setArguments(bundle);
-                getParentFragmentManager().beginTransaction().addToBackStack(null).add(R.id.categoriesFrag, startersFragment).commit();
+                RecipeFragment recipeFragment = new RecipeFragment();
+                recipeFragment.setArguments(bundle);
+                getParentFragmentManager().beginTransaction().addToBackStack(null).add(R.id.categoriesFrag, recipeFragment).commit();
 
 //                if (item.getId() == 1) {
 //                    StartersFragment startersFragment = new StartersFragment();

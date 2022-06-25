@@ -1,6 +1,7 @@
 package com.velasco.recipeapp.CRUD_Recipe;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -8,6 +9,7 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -24,6 +26,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.velasco.recipeapp.Bean.Recipe;
@@ -43,10 +46,10 @@ import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link DessertsFragment#newInstance} factory method to
+ * Use the {@link RecipeFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class DessertsFragment extends Fragment {
+public class RecipeFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -57,7 +60,7 @@ public class DessertsFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public DessertsFragment() {
+    public RecipeFragment() {
         // Required empty public constructor
     }
 
@@ -67,11 +70,11 @@ public class DessertsFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment DessertsFragment.
+     * @return A new instance of fragment StartersFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static DessertsFragment newInstance(String param1, String param2) {
-        DessertsFragment fragment = new DessertsFragment();
+    public static RecipeFragment newInstance(String param1, String param2) {
+        RecipeFragment fragment = new RecipeFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -88,6 +91,7 @@ public class DessertsFragment extends Fragment {
         }
     }
 
+
     /********************** START OF CODE *********************/
     View view;
 
@@ -103,10 +107,9 @@ public class DessertsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_desserts, container, false);
+        view = inflater.inflate(R.layout.fragment_recipe, container, false);
 
-
-        mRecyclerView = view.findViewById(R.id.rv_desserts);
+        mRecyclerView = view.findViewById(R.id.rv_starters);
 
         // Layout Manager
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());  // Κάθε item είναι μια γραμμή
@@ -119,6 +122,8 @@ public class DessertsFragment extends Fragment {
 
         // animation: fade in , fade out
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        Bundle bundle = this.getArguments();
+        int category_id = bundle.getInt("category_id");
 
 
         mRecipeList = new ArrayList<>();
@@ -143,15 +148,14 @@ public class DessertsFragment extends Fragment {
             @Override
             public void onItemLongClick(Recipe item) {
                 //display the dialog to confirm deletion
-                //showDialog(item);
+                showDialog(item, category_id);
             }
         });
-
 
         mRecyclerView.setAdapter(mRecipeAdapter);
 
 
-        refreshList();
+        refreshList(category_id);
         mActivityResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 new ActivityResultCallback<ActivityResult>() {
@@ -162,7 +166,7 @@ public class DessertsFragment extends Fragment {
                             Log.i("TEST", "onActivityResult: ");
                             Intent data = result.getData();
                             Log.i("TEST", "onActivityResult: DATA: " + data.getData().toString());
-                            refreshList();
+                            refreshList(category_id);
                         }
                     }
                 });
@@ -170,9 +174,73 @@ public class DessertsFragment extends Fragment {
         return view;
     }
 
-    private void refreshList() {
+
+    private void showDialog(Recipe recipe, int category_id) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        final CharSequence[] dialogItems = {"Edit Data", "Delete Data"};
+        builder.setTitle(recipe.getName());
+        builder.setItems(dialogItems, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                switch (i) {
+                    case 0:
+                       // Snackbar.make(view, "Edit", Snackbar.LENGTH_LONG).show();
+                        Bundle bundle = new Bundle();
+                        bundle.putParcelable("recipe", recipe);
+                        EditRecipeFragment editRecipeFragment = new EditRecipeFragment();
+
+                        editRecipeFragment.setArguments(bundle);
+                        getParentFragmentManager().beginTransaction().replace(R.id.startersFrag, editRecipeFragment).commit();
+
+                        break;
+                    case 1:
+                        AlertDialog.Builder builderDel = new AlertDialog.Builder(getContext());
+                        builderDel.setTitle(recipe.getName());
+                        builderDel.setMessage("Are you sure you want to delete this entry?" + Integer.toString(recipe.getId()));
+                        builderDel.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                StringRequest stringRequest = new StringRequest(Request.Method.POST, Constants.URL_DELETE_RECIPE, new Response.Listener<String>() {
+                                    @Override
+                                    public void onResponse(String response) {
+                                        Snackbar.make(view, "deleted" + recipe.getId(), Snackbar.LENGTH_LONG).show();
+                                        refreshList(category_id);
+                                    }
+                                }, new Response.ErrorListener() {
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+                                        Log.i("TEST", "onErrorResponse: " + error.toString());
+                                    }
+                                }) {
+                                    protected HashMap<String, String> getParams() throws AuthFailureError {
+                                        Map<String, String> params = new HashMap<>();
+                                        params.put("id", Integer.toString(recipe.getId()));
+                                        return (HashMap<String, String>) params;
+                                    }
+                                };
+                                RequestHandler.getInstance(getContext()).addToRequestQueue(stringRequest);
+                                dialogInterface.dismiss();
+                            }
+                        });
+
+                        builderDel.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                            }
+                        });
+                        builderDel.create().show();
+                        break;
+                }
+            }
+        });
+        builder.create().show();
+    }
+
+    private void refreshList(int category_id) {
+
         mRecipeList.clear();
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constants.URL_SELECT_CATEGORY_DESSERTS, new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constants.URL_SELECT_CATEGORY, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {
@@ -206,7 +274,7 @@ public class DessertsFragment extends Fragment {
         }) {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
-                params.put("name", "kl");
+                params.put("category", Integer.toString(category_id));
                 return params;
             }
         };
