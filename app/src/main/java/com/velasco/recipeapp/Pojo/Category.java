@@ -6,10 +6,21 @@ import android.os.Parcelable;
 public class Category implements Parcelable {
     private int id;
     private String name;
+    private String photo;
 
-    public Category(int id, String name) {
+
+    public Category(int id, String name, String photo) {
         this.id = id;
         this.name = name;
+        this.photo = photo;
+    }
+
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
     }
 
     public int getId() {

@@ -1,6 +1,7 @@
 package com.velasco.recipeapp.RecyclerViewAdapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.velasco.recipeapp.Pojo.Category;
 import com.velasco.recipeapp.R;
 
@@ -76,7 +78,11 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         public void bind(Category category, OnItemClickListener listener) {
 
             categoryNameTv.setText(category.getName());
-            //imageViewTv.setImageResource(); // logo
+            Log.i("category", category.getPhoto());
+            Glide.with(context)
+                    .load(category.getPhoto())
+                    .placeholder(R.drawable.img_contact_logo)
+                    .into(imageViewTv);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -173,13 +173,13 @@ public class IngredientsFragment extends Fragment {
     private void showDialog(Ingredient ingredient) {
         //create and initialise an alert dialog
         final androidx.appcompat.app.AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
-        alertDialog.setTitle("Delete entry");
-        alertDialog.setMessage("Are you sure you want to delete the selected contact?");
+        alertDialog.setTitle("Delete ingredient?");
+        alertDialog.setMessage("Are you sure you want to delete this ingredient?");
 
         //set the dialog OK action
         alertDialog.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                Snackbar.make(view, "YES WAS CLICKED" + ingredient.getId(), Snackbar.LENGTH_LONG).show();
+               // Snackbar.make(view, "YES WAS CLICKED" + ingredient.getId(), Snackbar.LENGTH_LONG).show();
 
                 // Add delete functionality
                 StringRequest stringRequest = new StringRequest(Request.Method.POST, Constants.URL_DELETE_INGREDIENT, new Response.Listener<String>() {
@@ -188,7 +188,7 @@ public class IngredientsFragment extends Fragment {
                         try {
                             JSONObject jsonObject = new JSONObject(response);
                             if (jsonObject.getString("success").equals("true")) {
-                                Snackbar.make(view, "" + jsonObject.getString("message"), Snackbar.LENGTH_LONG).show();
+                           //     Snackbar.make(view, "" + jsonObject.getString("message"), Snackbar.LENGTH_LONG).show();
                                 refreshList();
                             }
                         } catch (JSONException e) {

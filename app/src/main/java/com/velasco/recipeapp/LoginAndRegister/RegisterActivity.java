@@ -162,11 +162,10 @@ public class RegisterActivity extends AppCompatActivity {
 
     private boolean validate() {
         if (TextUtils.isEmpty(nameTxt)) {
-            nameTiet.setError("Please enter username");
+            nameTiet.setError("Please enter your name");
             nameTiet.requestFocus();
             return false;
         }
-
 
         if (TextUtils.isEmpty(passwordTxt)) {
             passwordTiet.setError("Enter a password");
@@ -184,7 +183,11 @@ public class RegisterActivity extends AppCompatActivity {
             emailTiet.setError("Enter a valid email");
             emailTiet.requestFocus();
             return false;
+        }
 
+        if (!passwordTiet.getText().toString().equals(passwordConfirmTiet.getText().toString())) {
+            Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show();
+            return false;
         }
 
         return true;

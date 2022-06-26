@@ -69,13 +69,13 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
         // Σύνδεση με το xml item
         private TextView recipeNameTv;
         private ImageView imageViewRecipeTv;
-
+        private TextView recipeDetailTv;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             // Σύνδεση με το xml item
             recipeNameTv = itemView.findViewById(R.id.tv_recipeName);
-            imageViewRecipeTv = itemView.findViewById(R.id.imageview_recipeImage);
+            recipeDetailTv = itemView.findViewById(R.id.tv_detail);
 
         }
 
@@ -83,6 +83,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
         // Ο adapter καλεί τον bind
         public void bind(Recipe recipe, OnItemClickListener listener) {
             recipeNameTv.setText(recipe.getName());
+            recipeDetailTv.setText(recipe.getDescription());
             //imageViewTv.setImageResource(); // logo
 
             itemView.setOnClickListener(new View.OnClickListener() {

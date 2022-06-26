@@ -201,14 +201,14 @@ public class RecipeFragment extends Fragment {
                     case 1:
                         AlertDialog.Builder builderDel = new AlertDialog.Builder(getContext());
                         builderDel.setTitle(recipe.getName());
-                        builderDel.setMessage("Are you sure you want to delete this entry?" + Integer.toString(recipe.getId()));
+                        builderDel.setMessage("Are you sure you want to delete this recipe?");
                         builderDel.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 StringRequest stringRequest = new StringRequest(Request.Method.POST, Constants.URL_DELETE_RECIPE, new Response.Listener<String>() {
                                     @Override
                                     public void onResponse(String response) {
-                                        Snackbar.make(view, "deleted" + recipe.getId(), Snackbar.LENGTH_LONG).show();
+                                        Snackbar.make(view, "deleted", Snackbar.LENGTH_LONG).show();
                                         refreshList(category_id);
                                     }
                                 }, new Response.ErrorListener() {

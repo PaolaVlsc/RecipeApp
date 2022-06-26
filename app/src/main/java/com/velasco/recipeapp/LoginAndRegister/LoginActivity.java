@@ -102,7 +102,7 @@ public class LoginActivity extends AppCompatActivity {
 
                                 //if no error in response
                                 if (jsonObject.getString("success").equals("true")) {
-                                    Toast.makeText(getApplicationContext(), jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
+                      //              Toast.makeText(getApplicationContext(), jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
                                     Log.i("TEST", "onResponse: TOTAL ROWS=" + jsonObject.getString("data"));
                                     JSONArray jsonArray = jsonObject.getJSONArray("data");
 
@@ -133,7 +133,7 @@ public class LoginActivity extends AppCompatActivity {
 
                                     // finish();
                                 } else {
-                                    Toast.makeText(getApplicationContext(), jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplicationContext(), "Wrong credentials", Toast.LENGTH_SHORT).show();
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -165,7 +165,7 @@ public class LoginActivity extends AppCompatActivity {
 
     boolean validate() {
         if (emailTxt.isEmpty()) {
-            emailEt.setError("Please enter your username");
+            emailEt.setError("Please enter your email");
             emailEt.requestFocus();
             return false;
         }
