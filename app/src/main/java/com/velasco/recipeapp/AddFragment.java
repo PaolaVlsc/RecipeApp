@@ -99,6 +99,10 @@ public class AddFragment extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_add, container, false);
 
+
+        //getting the current user
+        User user = SharedPrefManager.getInstance(getContext()).getUser();
+
         // spinner
         spinner = view.findViewById(R.id.spinner);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, spinnerList);
@@ -173,6 +177,7 @@ public class AddFragment extends Fragment {
                         params.put("name", recipeNameTxt);
                         params.put("description", descriptionTxt);
                         params.put("category", Integer.toString(category));
+                        params.put("userid", Integer.toString(user.getId()));
                         return params;
                     }
                 };

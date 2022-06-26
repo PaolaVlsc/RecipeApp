@@ -9,12 +9,22 @@ public class Recipe implements Parcelable {
     private String name;
     private String description;
     private int category;
+    private int userid;
 
-    public Recipe(int id, String name, String description, int category) {
+    public Recipe(int id, String name, String description, int category, int userid) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.category = category;
+        this.userid = userid;
+    }
+
+    public int getUserid() {
+        return userid;
+    }
+
+    public void setUserid(int userid) {
+        this.userid = userid;
     }
 
     public int getId() {

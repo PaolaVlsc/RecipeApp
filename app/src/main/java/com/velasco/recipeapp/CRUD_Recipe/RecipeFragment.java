@@ -33,7 +33,9 @@ import com.velasco.recipeapp.Bean.Recipe;
 import com.velasco.recipeapp.Constants;
 import com.velasco.recipeapp.R;
 import com.velasco.recipeapp.RecyclerViewAdapter.RecipeAdapter;
+import com.velasco.recipeapp.SharedPrefManager;
 import com.velasco.recipeapp.Singleton.RequestHandler;
+import com.velasco.recipeapp.User;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -101,7 +103,8 @@ public class RecipeFragment extends Fragment {
     private RecipeAdapter mRecipeAdapter;
 
     private ActivityResultLauncher<Intent> mActivityResultLauncher;
-
+    //getting the current user
+    User user = SharedPrefManager.getInstance(getContext()).getUser();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -124,6 +127,8 @@ public class RecipeFragment extends Fragment {
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         Bundle bundle = this.getArguments();
         int category_id = bundle.getInt("category_id");
+
+
 
 
         mRecipeList = new ArrayList<>();
@@ -275,6 +280,7 @@ public class RecipeFragment extends Fragment {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
                 params.put("category", Integer.toString(category_id));
+                params.put("userid", Integer.toString(user.getId()));
                 return params;
             }
         };
