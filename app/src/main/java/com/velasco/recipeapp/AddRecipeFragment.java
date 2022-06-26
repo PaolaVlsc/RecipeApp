@@ -149,10 +149,6 @@ public class AddRecipeFragment extends Fragment {
                             //Toast.makeText(AddActivity.this, jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
                             if (jsonObject.getString("success").equals("true")) {
                                 int recipe_id = Integer.parseInt(jsonObject.getString("inserted_id"));
-                                // success go back somewhere idk
-//                                Snackbar.make(view, "inserted" + recipe_id, Snackbar.LENGTH_LONG).show();
-//                                recipeNameEt.setText("");
-//                                descriptionEt.setText("");
 
                                 Bundle bundle = new Bundle();
                                 bundle.putInt("recipeID", recipe_id);

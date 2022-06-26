@@ -109,21 +109,7 @@ public class LoginActivity extends AppCompatActivity {
                                     JSONObject userJson = jsonArray.getJSONObject(0);
                                     User user = gson.fromJson(userJson.toString(), User.class);
                                     Log.i("TEST", user.getName() + " " + user.getEmail());
-//                                    for (int i = 0; i < jsonArray.length(); i++) {
-//                                        JSONObject userJson = jsonArray.getJSONObject(i);
-//                                        user = gson.fromJson(userJson.toString(), User.class);
-//                                        Log.i("TEST", user.getName() + " " + user.getEmail());
-//                                    }
 
-
-                                    //getting the user from the response
-                                    //   JSONObject userJson = jsonObject.getJSONObject("user");
-
-                                    //creating a new user object
-//                                    User user = gson.fromJson(jsonObject.getString("data"), User.class);
-//                                    Log.i("TEST", "user" + user.getId());
-
-//
                                     //storing the user in shared preferences
                                     SharedPrefManager.getInstance(getApplicationContext()).userLogin(user);
 

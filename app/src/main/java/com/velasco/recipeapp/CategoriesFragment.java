@@ -134,16 +134,6 @@ public class CategoriesFragment extends Fragment {
                 recipeFragment.setArguments(bundle);
                 getParentFragmentManager().beginTransaction().addToBackStack(null).add(R.id.categoriesFrag, recipeFragment).commit();
 
-//                if (item.getId() == 1) {
-//                    StartersFragment startersFragment = new StartersFragment();
-//                    getParentFragmentManager().beginTransaction().addToBackStack(null).add(R.id.categoriesFrag, startersFragment).commit();
-//                } else if (item.getId() == 2) {
-//                    MainCoursesFragment mainCoursesFragment = new MainCoursesFragment();
-//                    getParentFragmentManager().beginTransaction().addToBackStack(null).add(R.id.categoriesFrag, mainCoursesFragment).commit();
-//                } else {
-//                    DessertsFragment dessertsFragment = new DessertsFragment();
-//                    getParentFragmentManager().beginTransaction().addToBackStack(null).add(R.id.categoriesFrag, dessertsFragment).commit();
-//                }
             }
         });
 

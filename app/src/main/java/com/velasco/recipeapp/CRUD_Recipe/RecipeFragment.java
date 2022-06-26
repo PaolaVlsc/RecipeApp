@@ -273,8 +273,7 @@ public class RecipeFragment extends Fragment {
             }
         }, new Response.ErrorListener() {
             @Override
-            public void onErrorResponse(VolleyError error) {
-                // Toast.makeText(MainActivity.this, "Failed " + error.toString(), Toast.LENGTH_SHORT).show();
+            public void onErrorResponse(VolleyError error) { 
             }
         }) {
             protected Map<String, String> getParams() throws AuthFailureError {

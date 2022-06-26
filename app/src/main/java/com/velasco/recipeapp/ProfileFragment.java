@@ -108,12 +108,6 @@ public class ProfileFragment extends Fragment {
                 //getting the current user
                 user = SharedPrefManager.getInstance(getContext()).getUser();
 
-//                Log.i("TEST", user.getPhoto());
-//                Glide.with(getContext())
-//                        .load(user.getPhoto())
-//                        .placeholder(R.drawable.img_contact_logo)
-//                        .into(contactPictureIv);
-//
 
             }
         });
@@ -136,13 +130,10 @@ public class ProfileFragment extends Fragment {
 
 
     private void chooseFile() {
-        Log.i("OK", "MALLON");
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent, "Browse picture"), 1);
-        Log.i("OK", "2");
-
     }
 
 

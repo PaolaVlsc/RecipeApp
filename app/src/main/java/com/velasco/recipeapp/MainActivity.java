@@ -94,21 +94,13 @@ public class MainActivity extends AppCompatActivity {
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.i("OK", "3");
-
-        Log.i("TEST", "LOL");
-        Log.i("NIAOU", data.getDataString());
         Uri filepath = data.getData();
-        Log.i("OK", "4");
         try {
             bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filepath);
-            Log.i("TEST", "KEKW");
-            Log.i("OK", "5");
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        Log.i("OK", "6");
         UploadPicture(Integer.toString(8), getStringImage(bitmap));
 
 

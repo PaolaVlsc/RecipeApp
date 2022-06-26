@@ -113,16 +113,7 @@ public class RegisterActivity extends AppCompatActivity {
                                     User user = gson.fromJson(jsonObject.getString("data"), User.class);
                                     Log.i("TEST", "user" + user.getId());
 
-//                                    //getting the user from the response
-//                                    JSONObject userJson = jsonObject.getJSONObject("data");
-//
-//                                    //creating a new user object
-//                                    User user = new User(
-//                                            userJson.getInt("id"),
-//                                            userJson.getString("name"),
-//                                            userJson.getString("email")
-//                                    );
-//
+
 //                                    //storing the user in shared preferences
                                     SharedPrefManager.getInstance(getApplicationContext()).userLogin(user);
 //
