@@ -1,6 +1,6 @@
-package com.velasco.recipeapp;
+package com.velasco.recipeapp.LoginAndRegister;
 
-import static com.velasco.recipeapp.Constants.URL_LOGIN;
+import static com.velasco.recipeapp.WebServices.Constants.URL_LOGIN;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -20,7 +20,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.Gson;
-import com.velasco.recipeapp.Singleton.RequestHandler;
+import com.velasco.recipeapp.Pojo.User;
+import com.velasco.recipeapp.MainActivity;
+import com.velasco.recipeapp.R;
+import com.velasco.recipeapp.WebServices.Singleton.RequestHandler;
 
 import org.json.JSONArray;
 import org.json.JSONException;

@@ -1,4 +1,4 @@
-package com.velasco.recipeapp.Singleton;
+package com.velasco.recipeapp.WebServices.Singleton;
 
 
 import android.content.Context;

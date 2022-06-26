@@ -1,9 +1,11 @@
-package com.velasco.recipeapp;
+package com.velasco.recipeapp.LoginAndRegister;
 
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+
+import com.velasco.recipeapp.Pojo.User;
 
 public class SharedPrefManager {
 

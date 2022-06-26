@@ -9,6 +9,8 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.velasco.recipeapp.LoginAndRegister.LoginActivity;
+import com.velasco.recipeapp.LoginAndRegister.SharedPrefManager;
 
 public class MainActivity extends AppCompatActivity {
 

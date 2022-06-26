@@ -26,10 +26,11 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.velasco.recipeapp.Bean.Category;
+import com.velasco.recipeapp.Pojo.Category;
 import com.velasco.recipeapp.CRUD_Recipe.RecipeFragment;
 import com.velasco.recipeapp.RecyclerViewAdapter.CategoryAdapter;
-import com.velasco.recipeapp.Singleton.RequestHandler;
+import com.velasco.recipeapp.WebServices.Singleton.RequestHandler;
+import com.velasco.recipeapp.WebServices.Constants;
 
 import org.json.JSONArray;
 import org.json.JSONException;

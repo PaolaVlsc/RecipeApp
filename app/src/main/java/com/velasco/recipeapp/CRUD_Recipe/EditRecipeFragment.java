@@ -17,10 +17,10 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.velasco.recipeapp.Bean.Recipe;
-import com.velasco.recipeapp.Constants;
+import com.velasco.recipeapp.Pojo.Recipe;
+import com.velasco.recipeapp.WebServices.Constants;
 import com.velasco.recipeapp.R;
-import com.velasco.recipeapp.Singleton.RequestHandler;
+import com.velasco.recipeapp.WebServices.Singleton.RequestHandler;
 
 import org.json.JSONException;
 import org.json.JSONObject;

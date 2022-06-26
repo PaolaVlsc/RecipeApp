@@ -21,7 +21,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -32,12 +31,11 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.velasco.recipeapp.Bean.Instruction;
-import com.velasco.recipeapp.CRUD_Recipe.EditRecipeFragment;
-import com.velasco.recipeapp.Constants;
+import com.velasco.recipeapp.Pojo.Instruction;
+import com.velasco.recipeapp.WebServices.Constants;
 import com.velasco.recipeapp.R;
 import com.velasco.recipeapp.RecyclerViewAdapter.InstructionAdapter;
-import com.velasco.recipeapp.Singleton.RequestHandler;
+import com.velasco.recipeapp.WebServices.Singleton.RequestHandler;
 
 import org.json.JSONArray;
 import org.json.JSONException;

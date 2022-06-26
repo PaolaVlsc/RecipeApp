@@ -10,7 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.velasco.recipeapp.Bean.Recipe;
+import com.velasco.recipeapp.Pojo.Recipe;
 import com.velasco.recipeapp.R;
 
 import java.util.ArrayList;

@@ -29,13 +29,13 @@ import com.android.volley.toolbox.StringRequest;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.velasco.recipeapp.Bean.Recipe;
-import com.velasco.recipeapp.Constants;
+import com.velasco.recipeapp.Pojo.Recipe;
+import com.velasco.recipeapp.WebServices.Constants;
 import com.velasco.recipeapp.R;
 import com.velasco.recipeapp.RecyclerViewAdapter.RecipeAdapter;
-import com.velasco.recipeapp.SharedPrefManager;
-import com.velasco.recipeapp.Singleton.RequestHandler;
-import com.velasco.recipeapp.User;
+import com.velasco.recipeapp.LoginAndRegister.SharedPrefManager;
+import com.velasco.recipeapp.WebServices.Singleton.RequestHandler;
+import com.velasco.recipeapp.Pojo.User;
 
 import org.json.JSONArray;
 import org.json.JSONException;

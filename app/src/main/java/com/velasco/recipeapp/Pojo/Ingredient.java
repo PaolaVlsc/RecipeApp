@@ -1,4 +1,4 @@
-package com.velasco.recipeapp.Bean;
+package com.velasco.recipeapp.Pojo;
 
 import android.os.Parcel;
 import android.os.Parcelable;

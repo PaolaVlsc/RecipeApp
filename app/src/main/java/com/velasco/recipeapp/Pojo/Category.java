@@ -1,18 +1,15 @@
-package com.velasco.recipeapp;
-
+package com.velasco.recipeapp.Pojo;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class User implements Parcelable {
+public class Category implements Parcelable {
     private int id;
-    private String name, email;
+    private String name;
 
-
-    public User(int id, String name, String email) {
+    public Category(int id, String name) {
         this.id = id;
         this.name = name;
-        this.email = email;
     }
 
     public int getId() {
@@ -31,29 +28,21 @@ public class User implements Parcelable {
         this.name = name;
     }
 
-    public String getEmail() {
-        return email;
-    }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    protected User(Parcel in) {
+    protected Category(Parcel in) {
         id = in.readInt();
         name = in.readString();
-        email = in.readString();
     }
 
-    public static final Creator<User> CREATOR = new Creator<User>() {
+    public static final Creator<Category> CREATOR = new Creator<Category>() {
         @Override
-        public User createFromParcel(Parcel in) {
-            return new User(in);
+        public Category createFromParcel(Parcel in) {
+            return new Category(in);
         }
 
         @Override
-        public User[] newArray(int size) {
-            return new User[size];
+        public Category[] newArray(int size) {
+            return new Category[size];
         }
     };
 
@@ -66,6 +55,5 @@ public class User implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(id);
         dest.writeString(name);
-        dest.writeString(email);
     }
 }

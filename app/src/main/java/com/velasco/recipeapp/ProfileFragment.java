@@ -11,6 +11,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.velasco.recipeapp.Pojo.User;
+import com.velasco.recipeapp.LoginAndRegister.SharedPrefManager;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link ProfileFragment#newInstance} factory method to
