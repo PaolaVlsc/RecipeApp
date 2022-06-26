@@ -6,9 +6,10 @@ public class Constants {
     public static final String URL = "http://10.0.2.2/";
     public static final String ROOT_URL = URL + "Recipes/";
 
-    // login and register
+    // login and register , update picture user
     public static final String URL_REGISTER = ROOT_URL + "register.php";
     public static final String URL_LOGIN = ROOT_URL + "login.php";
+    public static final String URL_UPLOAD = ROOT_URL + "update_picture.php";
 
     // view by category recipe
     public static final String URL_SELECT_CATEGORIES = ROOT_URL + "select_categories.php";

@@ -7,14 +7,22 @@ import android.os.Parcelable;
 public class User implements Parcelable {
     private int id;
     private String name, email;
+    private String photo;
 
-
-    public User(int id, String name, String email) {
+    public User(int id, String name, String email, String photo) {
         this.id = id;
         this.name = name;
         this.email = email;
+        this.photo = photo;
     }
 
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
+    }
     public int getId() {
         return id;
     }

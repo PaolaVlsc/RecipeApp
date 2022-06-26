@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 
 import com.velasco.recipeapp.Pojo.User;
 
+
 public class SharedPrefManager {
 
     //the constants
@@ -14,6 +15,7 @@ public class SharedPrefManager {
     private static final String KEY_USERNAME = "USERNAME";
     private static final String KEY_EMAIL = "EMAIL";
     private static final String KEY_ID = "ID";
+    private static final String KEY_PHOTO = "PHOTO";
 
     private static SharedPrefManager mInstance;
     private static Context mCtx;
@@ -37,6 +39,7 @@ public class SharedPrefManager {
         editor.putInt(KEY_ID, user.getId());
         editor.putString(KEY_USERNAME, user.getName());
         editor.putString(KEY_EMAIL, user.getEmail());
+        editor.putString(KEY_PHOTO, user.getPhoto());
         editor.apply();
     }
 
@@ -52,7 +55,8 @@ public class SharedPrefManager {
         return new User(
                 sharedPreferences.getInt(KEY_ID, -1),
                 sharedPreferences.getString(KEY_USERNAME, null),
-                sharedPreferences.getString(KEY_EMAIL, null)
+                sharedPreferences.getString(KEY_EMAIL, null),
+                sharedPreferences.getString(KEY_PHOTO, null)
         );
     }
 
