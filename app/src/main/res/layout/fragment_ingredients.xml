@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/purple_200"
+    android:background="@color/gray50_200"
     tools:context=".CRUD_Recipe.Sub_CRUD_Recipe.IngredientsFragment"
     android:id="@+id/ingredientsFrag">
 
@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginBottom="200dp"
-            android:backgroundTint="@color/purple_700"
+            android:backgroundTint="@color/black"
             android:clickable="true"
             app:elevation="6dp"
             app:layout_constraintBottom_toBottomOf="parent"

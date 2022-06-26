@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
                     replaceFragment(new CategoriesFragment());
                     break;
                 case R.id.add:
-                    replaceFragment(new AddFragment());
+                    replaceFragment(new AddRecipeFragment());
                     break;
                 case R.id.profile:
                     replaceFragment(new ProfileFragment());
