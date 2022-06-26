@@ -1,9 +1,11 @@
 package com.velasco.recipeapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +13,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.velasco.recipeapp.Pojo.User;
 import com.velasco.recipeapp.LoginAndRegister.SharedPrefManager;
 
@@ -67,7 +70,7 @@ public class ProfileFragment extends Fragment {
 
     private ImageView contactPictureIv;
     private Button editPhotoBtn;
-
+    private User user;
     private TextView welcomeTv;
 
     @Override
@@ -87,15 +90,37 @@ public class ProfileFragment extends Fragment {
         welcomeTv = view.findViewById(R.id.tv_welcome);
 
         //getting the current user
-        User user = SharedPrefManager.getInstance(getContext()).getUser();
+        user = SharedPrefManager.getInstance(getContext()).getUser();
 
         // set text
         nameTv.setText(user.getName());
         emailTv.setText(user.getEmail());
+        Glide.with(this)
+                .load(user.getPhoto())
+                .placeholder(R.drawable.img_contact_logo)
+                .into(contactPictureIv);
+
+
+        editPhotoBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                chooseFile();
+                //getting the current user
+                user = SharedPrefManager.getInstance(getContext()).getUser();
+
+//                Log.i("TEST", user.getPhoto());
+//                Glide.with(getContext())
+//                        .load(user.getPhoto())
+//                        .placeholder(R.drawable.img_contact_logo)
+//                        .into(contactPictureIv);
+//
+
+            }
+        });
+
 
         //when the user presses logout button
         //calling the logout method
-
         logoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -105,6 +130,20 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+
         return view;
     }
+
+
+    private void chooseFile() {
+        Log.i("OK", "MALLON");
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Browse picture"), 1);
+        Log.i("OK", "2");
+
+    }
+
+
 }

@@ -23,6 +23,7 @@ public class User implements Parcelable {
     public void setPhoto(String photo) {
         this.photo = photo;
     }
+
     public int getId() {
         return id;
     }

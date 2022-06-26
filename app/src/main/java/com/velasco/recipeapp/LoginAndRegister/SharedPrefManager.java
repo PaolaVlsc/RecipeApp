@@ -7,7 +7,6 @@ import android.content.SharedPreferences;
 
 import com.velasco.recipeapp.Pojo.User;
 
-
 public class SharedPrefManager {
 
     //the constants
@@ -59,6 +58,7 @@ public class SharedPrefManager {
                 sharedPreferences.getString(KEY_PHOTO, null)
         );
     }
+
 
     //this method will logout the user
     public void logout() {
