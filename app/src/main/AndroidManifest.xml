@@ -3,7 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.velasco.recipeapp">
 
+    <!-- Add permission for volley -->
     <uses-permission android:name="android.permission.INTERNET" />
+
+    <!-- http: android:usesCleartextTraffic="true"  -->
 
     <application
         android:allowBackup="true"

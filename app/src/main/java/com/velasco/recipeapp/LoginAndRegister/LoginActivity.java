@@ -34,12 +34,15 @@ import java.util.Map;
 
 
 public class LoginActivity extends AppCompatActivity {
+
+
+    // views on login xml
     private TextInputEditText emailEt, passwordEt;
     private TextView linkRegisterTv;
     private Button loginBtn;
     private ProgressBar loadingPb;
 
-
+    // hold strings of text fields
     String emailTxt, passwordTxt;
 
     @Override
@@ -54,15 +57,14 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(new Intent(this, MainActivity.class));
         }
 
-        // sundesh
+        // connect with xml
         loadingPb = findViewById(R.id.pb_loading);
         emailEt = findViewById(R.id.et_email);
         passwordEt = findViewById(R.id.et_password);
         loginBtn = findViewById(R.id.btn_login);
         linkRegisterTv = findViewById(R.id.tv_linkRegister);
 
-        //if user presses on login
-        //calling the method login
+        // login listener
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,7 +74,7 @@ public class LoginActivity extends AppCompatActivity {
         });
 
 
-        // go to register screen
+        // register listener: go to register screen / activity
         linkRegisterTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -82,17 +84,23 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    // method to login
     private void userLogin() {
+
+        // get user's text
         emailTxt = emailEt.getText().toString().trim();
         passwordTxt = passwordEt.getText().toString().trim();
 
         // validate inputs
         if (validate()) {
             //if everything is fine
+            // send StringRequest with POST and to URL_LOGIN
             StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_LOGIN,
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
+
+                            // when it reaches a response make the loadingPb invisible
                             loadingPb.setVisibility(View.GONE);
 
                             try {
@@ -100,24 +108,25 @@ public class LoginActivity extends AppCompatActivity {
                                 JSONObject jsonObject = new JSONObject(response);
                                 Gson gson = new Gson();
 
-                                //if no error in response
+                                //if response success field equals to true
                                 if (jsonObject.getString("success").equals("true")) {
-                      //              Toast.makeText(getApplicationContext(), jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
-                                    Log.i("TEST", "onResponse: TOTAL ROWS=" + jsonObject.getString("data"));
+                                    // Toast.makeText(getApplicationContext(), jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
+                                    // Log.i("TEST", "onResponse: TOTAL ROWS=" + jsonObject.getString("data"));
+
+                                    // convert data field to object User (GSON)
                                     JSONArray jsonArray = jsonObject.getJSONArray("data");
-
-                                    JSONObject userJson = jsonArray.getJSONObject(0);
+                                    JSONObject userJson = jsonArray.getJSONObject(0); // only one entry
                                     User user = gson.fromJson(userJson.toString(), User.class);
-                                    Log.i("TEST", user.getName() + " " + user.getEmail());
+                                    // Log.i("TEST", user.getName() + " " + user.getEmail());
 
-                                    //storing the user in shared preferences
+                                    // storing the user in shared preferences
                                     SharedPrefManager.getInstance(getApplicationContext()).userLogin(user);
 
-                                    //starting the profile activity
+                                    // starting the main activity
                                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                                    Log.i("TEST", "user" + user.getName());
+                                    // Log.i("TEST", "user" + user.getName());
 
-                                    // finish();
+                                    finish(); // end activity
                                 } else {
                                     Toast.makeText(getApplicationContext(), "Wrong credentials", Toast.LENGTH_SHORT).show();
                                 }
@@ -134,13 +143,16 @@ public class LoginActivity extends AppCompatActivity {
                     }) {
                 @Override
                 protected Map<String, String> getParams() throws AuthFailureError {
+
+                    // set the parameters (id, value)
                     Map<String, String> params = new HashMap<>();
                     params.put("email", emailTxt);
                     params.put("password", passwordTxt);
+
                     return params;
                 }
             };
-
+            // add request to queue - singleton
             RequestHandler.getInstance(this).addToRequestQueue(stringRequest);
         } else {
             Toast.makeText(getApplicationContext(), "A field is empty", Toast.LENGTH_SHORT).show();
@@ -148,23 +160,23 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-
+    // method to check validation
     boolean validate() {
+
+        // email should not be empty
         if (emailTxt.isEmpty()) {
             emailEt.setError("Please enter your email");
             emailEt.requestFocus();
             return false;
         }
 
+        //  password should not be empty
         if (passwordTxt.isEmpty()) {
             passwordEt.setError("Please enter your password");
             passwordEt.requestFocus();
             return false;
         }
 
-
         return true;
-
-
     }
 }
