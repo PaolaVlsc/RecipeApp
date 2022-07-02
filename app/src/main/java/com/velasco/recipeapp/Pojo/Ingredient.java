@@ -4,12 +4,15 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class Ingredient implements Parcelable {
+
+    // members variable same as table's columns' name
     private int id;
     private String name;
     private float quantity;
     private String measurement;
     private int recipe;
 
+    // constructor
     public Ingredient(int id, String name, float quantity, String measurement, int recipe) {
         this.id = id;
         this.name = name;
@@ -18,15 +21,7 @@ public class Ingredient implements Parcelable {
         this.recipe = recipe;
     }
 
-    protected Ingredient(Parcel in) {
-        id = in.readInt();
-        name = in.readString();
-        quantity = in.readFloat();
-        measurement = in.readString();
-        recipe = in.readInt();
-    }
-
-
+    // setters and getters
     public int getId() {
         return id;
     }
@@ -65,6 +60,15 @@ public class Ingredient implements Parcelable {
 
     public void setRecipe(int recipe) {
         this.recipe = recipe;
+    }
+
+    // Parcelable
+    protected Ingredient(Parcel in) {
+        id = in.readInt();
+        name = in.readString();
+        quantity = in.readFloat();
+        measurement = in.readString();
+        recipe = in.readInt();
     }
 
     public static final Creator<Ingredient> CREATOR = new Creator<Ingredient>() {
