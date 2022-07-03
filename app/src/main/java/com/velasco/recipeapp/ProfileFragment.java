@@ -64,6 +64,9 @@ public class ProfileFragment extends Fragment {
         }
     }
 
+
+    /************** start of my own code *******/
+
     View view;
     private TextView nameTv, emailTv;
     private Button logoutBtn;
@@ -79,7 +82,6 @@ public class ProfileFragment extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_profile, container, false);
 
-
         // Σύνδεση με τη xml
         nameTv = view.findViewById(R.id.tv_name);
         emailTv = view.findViewById(R.id.tv_email);
@@ -92,26 +94,24 @@ public class ProfileFragment extends Fragment {
         //getting the current user
         user = SharedPrefManager.getInstance(getContext()).getUser();
 
-        // set text
+        // set text & image holder
         nameTv.setText(user.getName());
         emailTv.setText(user.getEmail());
+        // if user's photo is null then show the default picture
         Glide.with(this)
                 .load(user.getPhoto())
                 .placeholder(R.drawable.img_contact_logo)
                 .into(contactPictureIv);
 
-
+        // edit button listener
         editPhotoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 chooseFile();
                 //getting the current user
                 user = SharedPrefManager.getInstance(getContext()).getUser();
-
-
             }
         });
-
 
         //when the user presses logout button
         //calling the logout method
@@ -119,22 +119,19 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 SharedPrefManager.getInstance(getContext()).logout();
-                getActivity().finish();
+                getActivity().finish(); // main activity ends (this ensures that it cannot go back)
 
             }
         });
 
-
         return view;
     }
 
-
+    // start of Imager Chooser
     private void chooseFile() {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent, "Browse picture"), 1);
     }
-
-
 }

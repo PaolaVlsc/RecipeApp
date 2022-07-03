@@ -39,11 +39,12 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Bitmap bitmap;
+
+    private Bitmap bitmap; // to encode image
     User user;
 
     // STEP 7: Sundesh me xml
-    BottomNavigationView bottomNavigationView;
+    BottomNavigationView bottomNavigationView;  // menu
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,10 +58,12 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(this, LoginActivity.class));
         }
 
+
+        // get current logged in user
         user = SharedPrefManager.getInstance(this).getUser();
 
         // STEP 9: Να ξεκινάει από εδώ
-        replaceFragment(new CategoriesFragment()); // at the start of the app
+        replaceFragment(new CategoriesFragment()); // set which fragment to show up at the start of activity
 
         // STEP 7.1: sundesh
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
@@ -83,15 +86,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // STEP 9: Βοηθητική συνάρτηση
-    // the main activity is repsonsible for the switches on fragments
+    // the main activity is responsible for the switches on fragments
     private void replaceFragment(Fragment fragment) {
-        FragmentManager fragmentManager = getSupportFragmentManager(); // diaxeirisths
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction(); // sunallagh
-        fragmentTransaction.replace(R.id.frameLayout, fragment); // pou tha ginei h sunallagh
+        FragmentManager fragmentManager = getSupportFragmentManager(); // manager
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction(); // transaction
+        fragmentTransaction.replace(R.id.frameLayout, fragment); // where the transaction will take place
         fragmentTransaction.commit(); // commit
     }
 
-
+    // upload image ( profile fragment ) - The activity who's responsible for the fragment should manage this
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Uri filepath = data.getData();
@@ -102,13 +105,12 @@ public class MainActivity extends AppCompatActivity {
         }
 
         UploadPicture(Integer.toString(8), getStringImage(bitmap));
-
-
     }
 
 
+    // StringRequest to upload the image
     private void UploadPicture(final String id, final String photo) {
-        Log.i("OK", photo);
+        //Log.i("OK", photo);
 
         final ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Uploading...");
@@ -117,7 +119,6 @@ public class MainActivity extends AppCompatActivity {
         //getting the current user
         User user = SharedPrefManager.getInstance(this).getUser();
         Log.i("OK", "8");
-
 
         //if everything is fine
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_UPLOAD,
@@ -128,31 +129,27 @@ public class MainActivity extends AppCompatActivity {
                         //Log.i("TEST", response.toString());
 
                         try {
+
+                            // Get json object from response
                             JSONObject jsonObject = new JSONObject(response);
                             String success = jsonObject.getString("success");
-                            Log.i("OK", jsonObject.getString("success"));
+                            // Log.i("OK", jsonObject.getString("success"));
                             if (success.equals("1")) {
                                 Toast.makeText(getApplicationContext()
                                         , "Success!", Toast.LENGTH_SHORT).show();
-
-                                Log.i("OK", jsonObject.getString("photo_path"));
+                                // Log.i("OK", jsonObject.getString("photo_path"));
                                 user.setPhoto(jsonObject.getString("photo_path"));
-                               Log.i("OK", user.getPhoto());
+                                // Log.i("OK", user.getPhoto());
                                 SharedPrefManager.getInstance(getApplicationContext()).userLogin(user);
-                                Log.i("TEST", SharedPrefManager.getInstance(getApplicationContext()).getUser().getPhoto());
-
-                           }
-
-
+                                // Log.i("TEST", SharedPrefManager.getInstance(getApplicationContext()).getUser().getPhoto());
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                             progressDialog.dismiss();
                             Toast.makeText(getApplicationContext()
                                     , "Try again!", Toast.LENGTH_SHORT).show();
                         }
-
                     }
-
                 },
                 new Response.ErrorListener() {
                     @Override
@@ -164,6 +161,8 @@ public class MainActivity extends AppCompatActivity {
                 }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
+
+                // send parameters to POST request
                 Map<String, String> params = new HashMap<>();
                 params.put("id", Integer.toString(user.getId()));
                 params.put("photo", photo);
@@ -171,12 +170,10 @@ public class MainActivity extends AppCompatActivity {
                 return params;
             }
         };
-
         RequestHandler.getInstance(this).addToRequestQueue(stringRequest);
-
     }
 
-
+    // encode image
     private String getStringImage(Bitmap bitmap) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);

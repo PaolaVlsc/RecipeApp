@@ -78,9 +78,15 @@ public class AddRecipeFragment extends Fragment {
         }
     }
 
+    /********************** START OF CODE *********************/
 
+    // views of fragment
     View view;
     private Button cancelBtn;
+    private Button doneBtn;
+    private EditText recipeNameEt, descriptionEt;
+
+    // spinner
     private Spinner spinner;
     private String[] categories = {
             "Starters",
@@ -89,10 +95,7 @@ public class AddRecipeFragment extends Fragment {
     };
     public ArrayList<String> spinnerList = new ArrayList<>(Arrays.asList(categories));
 
-
-    private Button doneBtn;
-
-    private EditText recipeNameEt, descriptionEt;
+    // get texts from views
     private String recipeNameTxt, descriptionTxt;
 
 
@@ -101,7 +104,6 @@ public class AddRecipeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_add_recipe, container, false);
-
 
         //getting the current user
         User user = SharedPrefManager.getInstance(getContext()).getUser();
@@ -118,7 +120,6 @@ public class AddRecipeFragment extends Fragment {
         descriptionEt = view.findViewById(R.id.et_recipeDescription);
         doneBtn = view.findViewById(R.id.btn_doneRecipe);
 
-
         // cancel
         cancelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -129,8 +130,7 @@ public class AddRecipeFragment extends Fragment {
             }
         });
 
-
-        // done
+        // done btn listener - send POST request ( insert to database recipe )
         doneBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -139,31 +139,27 @@ public class AddRecipeFragment extends Fragment {
                 descriptionTxt = descriptionEt.getText().toString();
                 int category = spinner.getSelectedItemPosition() + 1;
 
-                // check if it is not empty
-
+                // FIXME: check if it is not empty - create a new recipe
                 StringRequest stringRequest = new StringRequest(Request.Method.POST, Constants.URL_ADD_RECIPE, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         try {
+                            // get json response
                             JSONObject jsonObject = new JSONObject(response);
                             //Toast.makeText(AddActivity.this, jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
                             if (jsonObject.getString("success").equals("true")) {
+                                // get the last inserted id recipe and create a bundle to send the id to the detailsFragment
                                 int recipe_id = Integer.parseInt(jsonObject.getString("inserted_id"));
-
                                 Bundle bundle = new Bundle();
                                 bundle.putInt("recipeID", recipe_id);
 
                                 DetailsFragment detailsFragment = new DetailsFragment();
                                 detailsFragment.setArguments(bundle);
                                 getParentFragmentManager().beginTransaction().replace(R.id.addFrag, detailsFragment).addToBackStack(null).commit();
-
-
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-
-
                     }
                 }, new Response.ErrorListener() {
                     @Override
@@ -172,6 +168,7 @@ public class AddRecipeFragment extends Fragment {
                     }
                 }) {
                     protected Map<String, String> getParams() throws AuthFailureError {
+                        // POST parameters
                         Map<String, String> params = new HashMap<>();
                         params.put("name", recipeNameTxt);
                         params.put("description", descriptionTxt);
@@ -181,10 +178,8 @@ public class AddRecipeFragment extends Fragment {
                     }
                 };
                 RequestHandler.getInstance(getContext()).addToRequestQueue(stringRequest);
-
             }
         });
-
         return view;
     }
 }
