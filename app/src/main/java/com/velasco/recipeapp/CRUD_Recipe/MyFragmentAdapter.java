@@ -9,15 +9,17 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 import com.velasco.recipeapp.CRUD_Recipe.Sub_CRUD_Recipe.IngredientsFragment;
 import com.velasco.recipeapp.CRUD_Recipe.Sub_CRUD_Recipe.StepsFragment;
 
+// src: https://stackoverflow.com/questions/63998971/pass-data-from-activity-to-fragment-via-fragmentstateadapter
 public class MyFragmentAdapter extends FragmentStateAdapter {
 
     private int recipe_id;
 
     public MyFragmentAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle, int recipe_id) {
         super(fragmentManager, lifecycle);
-        this.recipe_id = recipe_id;
+        this.recipe_id = recipe_id;  // get parameter
     }
 
+    // set Fragment
     @NonNull
     @Override
     public Fragment createFragment(int position) {

@@ -5,10 +5,13 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class User implements Parcelable {
+
+    // members variable same as table's columns' name
     private int id;
     private String name, email;
     private String photo;
 
+    // constructor
     public User(int id, String name, String email, String photo) {
         this.id = id;
         this.name = name;
@@ -16,6 +19,7 @@ public class User implements Parcelable {
         this.photo = photo;
     }
 
+    // setters and getters
     public String getPhoto() {
         return photo;
     }
@@ -48,6 +52,7 @@ public class User implements Parcelable {
         this.email = email;
     }
 
+    // Parcelable
     protected User(Parcel in) {
         id = in.readInt();
         name = in.readString();

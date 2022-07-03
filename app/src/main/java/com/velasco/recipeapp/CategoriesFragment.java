@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -91,7 +92,7 @@ public class CategoriesFragment extends Fragment {
     /********************** START OF CODE *********************/
     View view;
 
-
+    // recycler view
     private ArrayList<Category> mCategoryList;
     private RecyclerView mRecyclerView;
     private CategoryAdapter mCategoryAdapter;
@@ -105,6 +106,7 @@ public class CategoriesFragment extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_categories, container, false);
 
+        /********** start of recycler view settings ***********/
         mRecyclerView = view.findViewById(R.id.rv_categories);
 
         // Layout Manager
@@ -118,27 +120,27 @@ public class CategoriesFragment extends Fragment {
 
         // animation: fade in , fade out
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        /********** end of recycler view settings ***********/
 
-
+        // set recycler view data
         mCategoryList = new ArrayList<>();
-
-
         mCategoryAdapter = new CategoryAdapter(getContext(), mCategoryList, new CategoryAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Category item) {
 
+                // send bundle to fragment ( connection between fragments )
                 Bundle bundle = new Bundle();
-                bundle.putInt("category_id",  item.getId());
+                bundle.putInt("category_id", item.getId());
 
+                // change current fragment
                 RecipeFragment recipeFragment = new RecipeFragment();
                 recipeFragment.setArguments(bundle);
-                getParentFragmentManager().beginTransaction().addToBackStack(null).add(R.id.categoriesFrag, recipeFragment).commit();
-
+                getParentFragmentManager().beginTransaction().addToBackStack(null).add(R.id.categoriesFrag, recipeFragment).commit(); // main activity is responsible
             }
         });
-
         mRecyclerView.setAdapter(mCategoryAdapter);
 
+        // refresh database ( instead of liveview )
         refreshList();
         mActivityResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
@@ -147,9 +149,9 @@ public class CategoriesFragment extends Fragment {
                     public void onActivityResult(ActivityResult result) {
                         if (result.getResultCode() == Activity.RESULT_OK) {
                             // There are no request codes
-                            Log.i("TEST", "onActivityResult: ");
+                            //Log.i("TEST", "onActivityResult: ");
                             Intent data = result.getData();
-                            Log.i("TEST", "onActivityResult: DATA: " + data.getData().toString());
+                            // Log.i("TEST", "onActivityResult: DATA: " + data.getData().toString());
                             refreshList();
                         }
                     }
@@ -158,28 +160,28 @@ public class CategoriesFragment extends Fragment {
         return view;
     }
 
+    // fetch (select) data from database
     private void refreshList() {
         mCategoryList.clear();
         StringRequest stringRequest = new StringRequest(Request.Method.POST, Constants.URL_SELECT_CATEGORIES, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {
+                    // get json response
                     Gson gson = new Gson();
-
                     JSONObject jsonObject = new JSONObject(response);
                     JSONArray jsonArray = jsonObject.getJSONArray("data");
-                    //Toast.makeText(MainActivity.this,jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
-                    Log.i("TEST", "onResponse: SUCCESS=" + jsonObject.getString("success"));
-                    Log.i("TEST", "onResponse: MESSAGE=" + jsonObject.getString("message"));
-                    Log.i("TEST", "onResponse: TOTAL ROWS=" + jsonObject.getString("total"));
-                    Log.i("TEST", "onResponse: RESPONSE=" + response);
+                    // Toast.makeText(getActivity(), jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
+                    // Log.i("TEST", "onResponse: SUCCESS=" + jsonObject.getString("success"));
+                    // Log.i("TEST", "onResponse: MESSAGE=" + jsonObject.getString("message"));
+                    // Log.i("TEST", "onResponse: TOTAL ROWS=" + jsonObject.getString("total"));
+                    // Log.i("TEST", "onResponse: RESPONSE=" + response);
 
-
-                    Type type = new TypeToken<ArrayList<Category>>() {
-                    }.getType();
+                    // one line code
+                    // ArrayList<Category> categoryArrayList = gson.fromJson(jsonArray.toString(), Category.class);
+                    Type type = new TypeToken<ArrayList<Category>>() {}.getType();
                     ArrayList<Category> categoryArrayList = gson.fromJson(jsonArray.toString(), type);
                     mCategoryList.addAll(categoryArrayList);
-
 
                     mRecyclerView.setAdapter(mCategoryAdapter);
                 } catch (JSONException e) {

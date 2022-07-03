@@ -5,12 +5,14 @@ import android.os.Parcelable;
 
 public class Recipe implements Parcelable {
 
+    // members variable same as table's columns' name
     private int id;
     private String name;
     private String description;
     private int category;
     private int userid;
 
+    // constructor
     public Recipe(int id, String name, String description, int category, int userid) {
         this.id = id;
         this.name = name;
@@ -19,6 +21,7 @@ public class Recipe implements Parcelable {
         this.userid = userid;
     }
 
+    // setters and getters
     public int getUserid() {
         return userid;
     }
@@ -59,6 +62,7 @@ public class Recipe implements Parcelable {
         this.category = category;
     }
 
+    // Parcelable
     protected Recipe(Parcel in) {
         id = in.readInt();
         name = in.readString();

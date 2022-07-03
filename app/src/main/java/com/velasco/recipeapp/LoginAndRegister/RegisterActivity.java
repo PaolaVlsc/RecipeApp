@@ -34,10 +34,13 @@ import java.util.Map;
 
 public class RegisterActivity extends AppCompatActivity {
 
+    // views on register xml
     private TextInputEditText nameTiet, emailTiet, passwordTiet, passwordConfirmTiet;
     private Button registerBtn;
     private ProgressBar loadingPb;
     private TextView loginTv;
+
+    // hold strings of text fields
     private String nameTxt, emailTxt, passwordTxt, passwordConfirmTxt;
 
     @Override
@@ -46,10 +49,10 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        // sundesh me xml
+        // connect with xml
         loadingPb = findViewById(R.id.pb_loading);
 
-        //if the user is already logged in we will directly start the profile activity
+        //if the user is already logged in we will directly start the main activity
         if (SharedPrefManager.getInstance(this).isLoggedIn()) {
             finish();
             startActivity(new Intent(this, MainActivity.class));
@@ -57,7 +60,7 @@ public class RegisterActivity extends AppCompatActivity {
         }
 
 
-        // sundesh me xml
+        // connect with xml
         nameTiet = findViewById(R.id.et_name);
         emailTiet = findViewById(R.id.et_email);
         passwordTiet = findViewById(R.id.et_password);
@@ -66,15 +69,7 @@ public class RegisterActivity extends AppCompatActivity {
         loginTv = findViewById(R.id.tv_login);
         passwordConfirmTiet = findViewById(R.id.et_passwordConfirm);
 
-        registerBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //if user pressed on button register
-                //here we will register the user to server
-                registerUser();
-            }
-        });
-
+        // login listener button
         loginTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -85,38 +80,52 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
+        // register listener
+        registerBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //if user pressed on button register
+                //here we will register the user to server
+                registerUser();
+            }
+        });
+
     }
 
+    // method to register a user
     private void registerUser() {
+
+        // get text fields data
         nameTxt = nameTiet.getText().toString().trim();
         passwordTxt = passwordTiet.getText().toString().trim();
         emailTxt = emailTiet.getText().toString().trim();
 
-
-        // validate
+        // validate text fields
         if (validate()) {
+            // send StringRequest with POST and to URL_REGISTER
             StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_REGISTER,
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
+                            // when it receives a response make the loadingPb invisible
                             loadingPb.setVisibility(View.GONE);
 
                             try {
                                 //converting response to json object
                                 JSONObject jsonObject = new JSONObject(response);
                                 Gson gson = new Gson();
-                                //if no error in response
+                                //if response success field equals to 1
                                 if (jsonObject.getString("success").equals("1")) {
-                                    Toast.makeText(RegisterActivity.this, "Success login: ", Toast.LENGTH_SHORT).show();
-                                    Log.i("TEST", "onResponse: TOTAL ROWS=" + jsonObject.getString("data"));
+                                    // Toast.makeText(RegisterActivity.this, "Success login: ", Toast.LENGTH_SHORT).show();
+                                    // Log.i("TEST", "onResponse: TOTAL ROWS=" + jsonObject.getString("data"));
 
+                                    // get response "data" and convert it to a user GSON
                                     User user = gson.fromJson(jsonObject.getString("data"), User.class);
-                                    Log.i("TEST", "user" + user.getId());
+                                    // Log.i("TEST", "user" + user.getId());
 
-
-//                                    //storing the user in shared preferences
+                                    //storing the user in shared preferences
                                     SharedPrefManager.getInstance(getApplicationContext()).userLogin(user);
-//
+
                                     //starting the profile activity
                                     finish();
                                     startActivity(new Intent(RegisterActivity.this, MainActivity.class));
@@ -136,14 +145,16 @@ public class RegisterActivity extends AppCompatActivity {
                     }) {
                 @Override
                 protected Map<String, String> getParams() throws AuthFailureError {
+                    // set the parameters (id, value)
                     Map<String, String> params = new HashMap<>();
                     params.put("name", nameTxt);
                     params.put("email", emailTxt);
                     params.put("password", passwordTxt);
+
                     return params;
                 }
             };
-
+            // add request to queue - singleton
             RequestHandler.getInstance(this).addToRequestQueue(stringRequest);
         } else {
             Toast.makeText(getApplicationContext(), "A field is empty", Toast.LENGTH_SHORT).show();
@@ -151,31 +162,38 @@ public class RegisterActivity extends AppCompatActivity {
 
     }
 
+    // method to check validation of text fields
     private boolean validate() {
+
+        // Name field should not be empty
         if (TextUtils.isEmpty(nameTxt)) {
             nameTiet.setError("Please enter your name");
             nameTiet.requestFocus();
             return false;
         }
 
+        // password should not be empty
         if (TextUtils.isEmpty(passwordTxt)) {
             passwordTiet.setError("Enter a password");
             passwordTiet.requestFocus();
             return false;
         }
 
+        // email should not be empty
         if (TextUtils.isEmpty(emailTxt)) {
             emailTiet.setError("Please enter your email");
             emailTiet.requestFocus();
             return false;
         }
 
+        // email should be an email format (use a ready java method)
         if (!android.util.Patterns.EMAIL_ADDRESS.matcher(emailTxt).matches()) {
             emailTiet.setError("Enter a valid email");
             emailTiet.requestFocus();
             return false;
         }
 
+        // compare if confirm pwd is the same as pwd inserted
         if (!passwordTiet.getText().toString().equals(passwordConfirmTiet.getText().toString())) {
             Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show();
             return false;

@@ -4,17 +4,20 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class Category implements Parcelable {
+
+    // members variable
     private int id;
     private String name;
     private String photo;
 
-
+    // constructor
     public Category(int id, String name, String photo) {
         this.id = id;
         this.name = name;
         this.photo = photo;
     }
 
+    // setters and getters
     public String getPhoto() {
         return photo;
     }
@@ -39,12 +42,12 @@ public class Category implements Parcelable {
         this.name = name;
     }
 
-
     protected Category(Parcel in) {
         id = in.readInt();
         name = in.readString();
     }
 
+    // Parcelable
     public static final Creator<Category> CREATOR = new Creator<Category>() {
         @Override
         public Category createFromParcel(Parcel in) {
