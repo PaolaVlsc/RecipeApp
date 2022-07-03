@@ -97,12 +97,13 @@ public class RecipeFragment extends Fragment {
     /********************** START OF CODE *********************/
     View view;
 
-
+    // recycler view
     private ArrayList<Recipe> mRecipeList;
     private RecyclerView mRecyclerView;
     private RecipeAdapter mRecipeAdapter;
 
     private ActivityResultLauncher<Intent> mActivityResultLauncher;
+
     //getting the current user
     User user = SharedPrefManager.getInstance(getContext()).getUser();
 
@@ -112,6 +113,7 @@ public class RecipeFragment extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_recipe, container, false);
 
+        /********** start of recycler view settings ***********/
         mRecyclerView = view.findViewById(R.id.rv_starters);
 
         // Layout Manager
@@ -125,41 +127,42 @@ public class RecipeFragment extends Fragment {
 
         // animation: fade in , fade out
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        /********** end of recycler view settings ***********/
+
+        // set recycler view data
+
+        // get parameter category id
         Bundle bundle = this.getArguments();
         int category_id = bundle.getInt("category_id");
-
-
-
-
         mRecipeList = new ArrayList<>();
-
-
         mRecipeAdapter = new RecipeAdapter(getContext(), mRecipeList, new RecipeAdapter.OnItemClickListener() {
-
             @Override
             public void onItemClick(Recipe item) {
 
-
+                // send bundle to fragment ( communication between fragments )
                 int id = item.getId();
                 Bundle bundle = new Bundle();
                 bundle.putInt("recipeID", id);
 
+                // details fragment is responsible for the communication between the tab layout fragments
                 DetailsFragment detailsFragment = new DetailsFragment();
                 detailsFragment.setArguments(bundle);
+
+                // main activity is responsible for the fragment transaction ( change frag: categoriesFrag -> details )
                 getParentFragmentManager().beginTransaction().replace(R.id.categoriesFrag, detailsFragment).addToBackStack(null).commit();
 
             }
         }, new RecipeAdapter.OnItemLongClickListener() {
+            // DELETE AND EDIT RECIPE
             @Override
             public void onItemLongClick(Recipe item) {
                 //display the dialog to confirm deletion
                 showDialog(item, category_id);
             }
         });
-
         mRecyclerView.setAdapter(mRecipeAdapter);
 
-
+        // refresh database selected category ( instead of liveview )
         refreshList(category_id);
         mActivityResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
@@ -168,9 +171,9 @@ public class RecipeFragment extends Fragment {
                     public void onActivityResult(ActivityResult result) {
                         if (result.getResultCode() == Activity.RESULT_OK) {
                             // There are no request codes
-                            Log.i("TEST", "onActivityResult: ");
+                            // Log.i("TEST", "onActivityResult: ");
                             Intent data = result.getData();
-                            Log.i("TEST", "onActivityResult: DATA: " + data.getData().toString());
+                            // Log.i("TEST", "onActivityResult: DATA: " + data.getData().toString());
                             refreshList(category_id);
                         }
                     }
@@ -179,7 +182,7 @@ public class RecipeFragment extends Fragment {
         return view;
     }
 
-
+    // EDIT - DELETE recipe
     private void showDialog(Recipe recipe, int category_id) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         final CharSequence[] dialogItems = {"Edit Data", "Delete Data"};
@@ -189,16 +192,20 @@ public class RecipeFragment extends Fragment {
             public void onClick(DialogInterface dialogInterface, int i) {
                 switch (i) {
                     case 0:
-                       // Snackbar.make(view, "Edit", Snackbar.LENGTH_LONG).show();
+                        // Snackbar.make(view, "Edit", Snackbar.LENGTH_LONG).show();
+
+                        // send bundle to EditRecipeFragment and start
                         Bundle bundle = new Bundle();
                         bundle.putParcelable("recipe", recipe);
-                        EditRecipeFragment editRecipeFragment = new EditRecipeFragment();
 
+                        EditRecipeFragment editRecipeFragment = new EditRecipeFragment();
                         editRecipeFragment.setArguments(bundle);
-                        getParentFragmentManager().beginTransaction().replace(R.id.startersFrag, editRecipeFragment).commit();
+                        getParentFragmentManager().beginTransaction().replace(R.id.recipeFrag, editRecipeFragment).commit();
 
                         break;
+
                     case 1:
+                        // SEND StringRequest POST method to delete recipe
                         AlertDialog.Builder builderDel = new AlertDialog.Builder(getContext());
                         builderDel.setTitle(recipe.getName());
                         builderDel.setMessage("Are you sure you want to delete this recipe?");
@@ -218,6 +225,7 @@ public class RecipeFragment extends Fragment {
                                     }
                                 }) {
                                     protected HashMap<String, String> getParams() throws AuthFailureError {
+                                        // set parameters to POST method
                                         Map<String, String> params = new HashMap<>();
                                         params.put("id", Integer.toString(recipe.getId()));
                                         return (HashMap<String, String>) params;
@@ -242,6 +250,7 @@ public class RecipeFragment extends Fragment {
         builder.create().show();
     }
 
+    // refresh fragment
     private void refreshList(int category_id) {
 
         mRecipeList.clear();
@@ -249,22 +258,21 @@ public class RecipeFragment extends Fragment {
             @Override
             public void onResponse(String response) {
                 try {
-                    Gson gson = new Gson();
-
+                    // get json response and use Gson to create objects
                     JSONObject jsonObject = new JSONObject(response);
                     JSONArray jsonArray = jsonObject.getJSONArray("data");
-                    //Toast.makeText(MainActivity.this,jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
-                    Log.i("TEST", "onResponse: SUCCESS=" + jsonObject.getString("success"));
-                    Log.i("TEST", "onResponse: MESSAGE=" + jsonObject.getString("message"));
-                    Log.i("TEST", "onResponse: TOTAL ROWS=" + jsonObject.getString("total"));
-                    Log.i("TEST", "onResponse: RESPONSE=" + response);
 
+                    Gson gson = new Gson();
+                    // Toast.makeText(MainActivity.this,jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
+                    // Log.i("TEST", "onResponse: SUCCESS=" + jsonObject.getString("success"));
+                    // Log.i("TEST", "onResponse: MESSAGE=" + jsonObject.getString("message"));
+                    // Log.i("TEST", "onResponse: TOTAL ROWS=" + jsonObject.getString("total"));
+                    // Log.i("TEST", "onResponse: RESPONSE=" + response);
 
                     Type type = new TypeToken<ArrayList<Recipe>>() {
                     }.getType();
                     ArrayList<Recipe> recipeArrayList = gson.fromJson(jsonArray.toString(), type);
                     mRecipeList.addAll(recipeArrayList);
-
 
                     mRecyclerView.setAdapter(mRecipeAdapter);
                 } catch (JSONException e) {
@@ -277,6 +285,7 @@ public class RecipeFragment extends Fragment {
             }
         }) {
             protected Map<String, String> getParams() throws AuthFailureError {
+                // set parameters
                 Map<String, String> params = new HashMap<>();
                 params.put("category", Integer.toString(category_id));
                 params.put("userid", Integer.toString(user.getId()));

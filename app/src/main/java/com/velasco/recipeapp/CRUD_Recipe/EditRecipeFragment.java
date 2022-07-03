@@ -11,12 +11,14 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.google.android.material.snackbar.Snackbar;
 import com.velasco.recipeapp.Pojo.Recipe;
 import com.velasco.recipeapp.WebServices.Constants;
 import com.velasco.recipeapp.R;
@@ -77,10 +79,15 @@ public class EditRecipeFragment extends Fragment {
         }
     }
 
+    /********************* START OF CODE *********************/
 
+    // views of fragment
     View view;
-
     private Button cancelBtn;
+    private Button updateBtn;
+    private EditText recipeNameEt, descriptionEt;
+
+    // spinner
     private Spinner spinner;
     private String[] categories = {
             "Starters",
@@ -89,10 +96,7 @@ public class EditRecipeFragment extends Fragment {
     };
     public ArrayList<String> spinnerList = new ArrayList<>(Arrays.asList(categories));
 
-
-    private Button updateBtn;
-
-    private EditText recipeNameEt, descriptionEt;
+    // get texts from database
     private String recipeNameTxt, descriptionTxt;
 
 
@@ -118,43 +122,54 @@ public class EditRecipeFragment extends Fragment {
         Bundle bundle = this.getArguments();
         Recipe recipe = bundle.getParcelable("recipe");
 
+        // text from database
         recipeNameTxt = recipe.getName();
         descriptionTxt = recipe.getDescription();
+
+        // set views
         recipeNameEt.setText(recipeNameTxt);
         descriptionEt.setText(descriptionTxt);
-        spinner.setSelection(recipe.getCategory()-1);
+        spinner.setSelection(recipe.getCategory() - 1);
 
+        // update btn listener
         updateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // get texts
+
+                // get new data
                 recipeNameTxt = recipeNameEt.getText().toString();
                 descriptionTxt = descriptionEt.getText().toString();
                 int category = spinner.getSelectedItemPosition() + 1;
 
-                // check if it is not empty
+                // FIXME: check if it is not empty
 
-                // send query
+                // StringRequest POST method - UPDATE RECIPE
                 StringRequest stringRequest = new StringRequest(Request.Method.POST, Constants.URL_UPDATE_RECIPE, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         try {
+                            // get json response
                             JSONObject jsonObject = new JSONObject(response);
                             //Toast.makeText(AddActivity.this, jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
                             if (jsonObject.getString("success").equals("true")) {
-//                               int recipe_id = Integer.parseInt(jsonObject.getString("inserted_id"));
-                                // success go back somewhere idk
-//                                Snackbar.make(view, "updated" + recipe.getId(), Snackbar.LENGTH_LONG).show();
-//                                recipeNameEt.setText("");
-//                                descriptionEt.setText("");
 
+                                /******* debugging
+                                 // int recipe_id = Integer.parseInt(jsonObject.getString("inserted_id"));
+                                 // success go back somewhere idk
+                                 // Snackbar.make(view, "updated" + recipe.getId(), Snackbar.LENGTH_LONG).show();
+                                 // recipeNameEt.setText("");
+                                 // descriptionEt.setText(""); ******/
+
+                                // send bundle to fragment
                                 Bundle bundle = new Bundle();
                                 bundle.putInt("recipeID", recipe.getId());
 
+                                // details fragment is responsible for the communication between the tab layout fragments
                                 DetailsFragment detailsFragment = new DetailsFragment();
                                 detailsFragment.setArguments(bundle);
-                                getParentFragmentManager().beginTransaction().replace(R.id.editRecipeFrag, detailsFragment).addToBackStack(null).commit();
 
+                                // main activity is responsible for the fragment transaction ( change frag: edit -> details )
+                                getParentFragmentManager().beginTransaction().replace(R.id.editRecipeFrag, detailsFragment).addToBackStack(null).commit();
 
                             }
                         } catch (JSONException e) {
@@ -165,10 +180,11 @@ public class EditRecipeFragment extends Fragment {
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        //Toast.makeText(AddActivity.this, "Failed to Add Data",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }) {
                     protected Map<String, String> getParams() throws AuthFailureError {
+                        // SEND POST PARAMETERS
                         Map<String, String> params = new HashMap<>();
                         params.put("id", Integer.toString(recipe.getId()));
                         params.put("name", recipeNameTxt);
@@ -178,7 +194,6 @@ public class EditRecipeFragment extends Fragment {
                     }
                 };
                 RequestHandler.getInstance(getContext()).addToRequestQueue(stringRequest);
-
             }
         });
 

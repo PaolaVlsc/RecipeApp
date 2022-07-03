@@ -63,17 +63,15 @@ public class DetailsFragment extends Fragment {
     }
 
 
-    /************************************ MINE *****************************/
+    /********************* START OF CODE *********************/
 
     // STEP 20:  Δήλωση view
     View view;
 
-    // STEP 21: Διαδικασία Recycler View
+    // STEP 21: Διαδικασία Tab Layout management
     private TabLayout tabLayout;
     private ViewPager2 viewPager2;
     private MyFragmentAdapter adapter;
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -81,13 +79,15 @@ public class DetailsFragment extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_details, container, false);
 
-
+        // get recipe id ( from recipe fragment or from add recipe fragment)
         Bundle bundle = this.getArguments();
         int recipe_id = bundle.getInt("recipeID");
 
+        // connect to xml
         tabLayout = view.findViewById(R.id.tabLayout);
         viewPager2 = view.findViewById(R.id.viewPager2);
 
+        // tab layout manager
         FragmentManager fragmentManager = getChildFragmentManager();
         adapter = new MyFragmentAdapter(fragmentManager, getLifecycle(), recipe_id);
         viewPager2.setAdapter(adapter);
@@ -95,6 +95,8 @@ public class DetailsFragment extends Fragment {
 
         // STEP 23
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+
+            // get fragment position
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager2.setCurrentItem(tab.getPosition());
@@ -111,6 +113,7 @@ public class DetailsFragment extends Fragment {
             }
         });
 
+        // set fragment tab
         viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
@@ -118,8 +121,6 @@ public class DetailsFragment extends Fragment {
             }
         });
 
-
         return view;
-
     }
 }
