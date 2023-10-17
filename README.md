@@ -17,6 +17,8 @@ A full stack android application for the final project on a uni subject "Technol
      - [Delete a Recipe](#delete-a-recipe)
      - [Edit Recipe](#edit-recipe)
      - [Profile](#profile)
+4. [Author](#author)
+5. [Extras](#extras)
 
 ## Technologies used
 
@@ -118,3 +120,7 @@ In phpMyAdmin, with the "recipes_db" database selected, import the file "recipes
 ## Authors
 
 This project was written by Velasco Paola
+
+## Extras
+* Report paper in greek: [Report paper](https://github.com/PaolaVlsc/RecipeApp/blob/master/extras/cs161020_PROJECT.pdf)
+* Εκφώνηση: (https://github.com/PaolaVlsc/RecipeApp/blob/master/extras/%CE%95%CE%9A%CE%A6%CE%A9%CE%9D%CE%97%CE%A3%CE%97%20%CE%A4%CE%95%CE%9B%CE%99%CE%9A%CE%97%CE%A3%20%CE%91%CE%A3%CE%9A%CE%97%CE%A3%CE%97%CE%A3%20(%CE%A3%CE%95%CE%A0%CE%A4).pdf)
