@@ -72,7 +72,7 @@ In phpMyAdmin, with the "recipes_db" database selected, import the file "recipes
 
 ### Login
 <div align="center">
-  <img src="https://github.com/PaolaVlsc/RecipeApp/assets/87998374/23cad322-e4e2-4505-b13e-f199e0e5e8a8" width="50%">
+  <img src="https://github.com/PaolaVlsc/RecipeApp/assets/87998374/23cad322-e4e2-4505-b13e-f199e0e5e8a8" width="30%">
 </div>
 
 ### Register
@@ -111,7 +111,7 @@ In phpMyAdmin, with the "recipes_db" database selected, import the file "recipes
 
 #### Profile
 <div align="center">
-  <img src="https://github.com/PaolaVlsc/RecipeApp/assets/87998374/b6545ae1-f5b3-4a28-a871-aa02951e1dd0" width="50%">
+  <img src="https://github.com/PaolaVlsc/RecipeApp/assets/87998374/b6545ae1-f5b3-4a28-a871-aa02951e1dd0" width="30%">
 </div>
 
 
